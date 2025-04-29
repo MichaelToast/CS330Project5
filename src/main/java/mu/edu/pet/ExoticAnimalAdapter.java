@@ -1,10 +1,7 @@
-package mu.edu.pet.adaptor;
+package mu.edu.pet;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import mu.edu.pet.ExoticAnimal;
-import mu.edu.pet.Pet;
 
 public class ExoticAnimalAdapter extends Pet {
     private ExoticAnimal exoticAnimal;
@@ -64,15 +61,17 @@ public class ExoticAnimalAdapter extends Pet {
 	}
 
 	public boolean isAdopted() {
-		return this.isAdopted();
+		// return this.isAdopted();
+		return super.isAdopted();
 	}
 
 	public void setAdopted(boolean adopted) {
-		this.setAdopted(adopted);
+		super.setAdopted(adopted);
 	}
 	
     @Override
 	public String toString() {
+    	System.out.println("Adoption Status: " + this.isAdopted());
 		return this.exoticAnimal.toString();
 	}
 

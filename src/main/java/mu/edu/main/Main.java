@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import mu.edu.pet.Cat;
 import mu.edu.pet.ExoticAnimal;
+import mu.edu.pet.ExoticAnimalAdapter;
 import mu.edu.pet.Pet;
-import mu.edu.pet.adaptor.ExoticAnimalAdapter;
 
 public class Main {
 
@@ -16,7 +16,7 @@ public class Main {
 		ExoticAnimal Steve = new ExoticAnimal("exo001", "Steve", "Bear", "Black", 80);
 		Cat Carl = new Cat("123", "Fiend", "Blue", 20);
 		Pet StevePet = new ExoticAnimalAdapter(Steve);
-		
+		System.out.println(StevePet.isAdopted());
 		
 		animals.add(Carl);
 		animals.add(StevePet);
@@ -25,7 +25,9 @@ public class Main {
 			System.out.println(creature);
 		}
 		
-
+		StevePet.setAdopted(true);
+		System.out.println(StevePet.isAdopted());
+		
 	}
 
 }

@@ -69,6 +69,10 @@ public class ExoticAnimalAdapter extends Pet {
 		super.setAdopted(adopted);
 	}
 	
+	public ExoticAnimal getExoticAnimal() {
+		return this.exoticAnimal;
+	}
+	
     @Override
 	public String toString() {
     	System.out.println("Adoption Status: " + this.isAdopted());

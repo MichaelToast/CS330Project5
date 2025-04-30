@@ -3,20 +3,19 @@ package mu.edu.pet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class ExoticAnimalAdapter extends Pet {
+public class ExoticAnimalAdapter implements Pet {
     private ExoticAnimal exoticAnimal;
+    private boolean adopted;
 
     // Constructor that adapts the ExoticAnimal to Pet
     public ExoticAnimalAdapter(ExoticAnimal exoticAnimal) {
-        super(exoticAnimal.getUniqueId(), exoticAnimal.getAnimalName(),
-              exoticAnimal.getCategory(), exoticAnimal.getSubSpecies(),
-              exoticAnimal.getYearsOld());
         this.exoticAnimal = exoticAnimal;
+        this.adopted = false; 
     }
     
     public ExoticAnimalAdapter(String uniqueId, String animalName, String category, String subSpecies, int yearsOld) {
-    	super(uniqueId, animalName, category, subSpecies, yearsOld);
     	this.exoticAnimal = new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld);
+    	this.adopted = false; 
     	
     }
     
@@ -62,11 +61,11 @@ public class ExoticAnimalAdapter extends Pet {
 
 	public boolean isAdopted() {
 		// return this.isAdopted();
-		return super.isAdopted();
+		return this.adopted;
 	}
 
 	public void setAdopted(boolean adopted) {
-		super.setAdopted(adopted);
+		this.adopted = adopted;
 	}
 	
 	public ExoticAnimal getExoticAnimal() {

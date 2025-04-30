@@ -2,10 +2,15 @@ package mu.edu.main;
 
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
+import mu.edu.controller.ShelterController;
+import mu.edu.model.Shelter;
 import mu.edu.pet.Cat;
 import mu.edu.pet.ExoticAnimal;
 import mu.edu.pet.ExoticAnimalAdapter;
 import mu.edu.pet.Pet;
+import mu.edu.view.AdoptionInputView;
 
 public class Main {
 
@@ -27,6 +32,17 @@ public class Main {
 		
 		StevePet.setAdopted(true);
 		System.out.println(StevePet.isAdopted());
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				ShelterController controller = new ShelterController(
+						new Shelter(),
+						new AdoptionInputView());
+				controller.initiate();
+
+			}
+		});
 		
 	}
 

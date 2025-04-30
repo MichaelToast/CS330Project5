@@ -4,12 +4,22 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 
 import mu.edu.model.Shelter;
+import mu.edu.view.AdoptionCenterView;
+import mu.edu.view.AdoptionInputView;
 
 public class ShelterController {
 	private Shelter shelter; 
+	private AdoptionInputView inputView;
+	private AdoptionCenterView centerView;
 	
-	public ShelterController(Shelter shelter) {
+	public ShelterController(Shelter shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
+		this.inputView = inputView;
+		// this.centerView = centerView; 
+	}
+	
+	public void initiate() {
+		inputView.setVisible(true);
 	}
 	
 	public void addAnimals(String fileName) {

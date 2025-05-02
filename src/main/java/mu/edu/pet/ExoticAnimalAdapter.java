@@ -3,19 +3,21 @@ package mu.edu.pet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class ExoticAnimalAdapter implements Pet {
+public class ExoticAnimalAdapter extends Pet {
     private ExoticAnimal exoticAnimal;
-    private boolean adopted;
+    // private boolean adopted;
 
     // Constructor that adapts the ExoticAnimal to Pet
     public ExoticAnimalAdapter(ExoticAnimal exoticAnimal) {
+    	 super(exoticAnimal.getUniqueId(), exoticAnimal.getAnimalName(),
+                 exoticAnimal.getCategory(), exoticAnimal.getSubSpecies(),
+                 exoticAnimal.getYearsOld());
         this.exoticAnimal = exoticAnimal;
-        this.adopted = false; 
     }
     
     public ExoticAnimalAdapter(String uniqueId, String animalName, String category, String subSpecies, int yearsOld) {
-    	this.exoticAnimal = new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld);
-    	this.adopted = false; 
+    	super(uniqueId, animalName, category, subSpecies, yearsOld);
+    	//this.adopted = false; 
     	
     }
     
@@ -61,11 +63,11 @@ public class ExoticAnimalAdapter implements Pet {
 
 	public boolean isAdopted() {
 		// return this.isAdopted();
-		return this.adopted;
+		return super.isAdopted();
 	}
 
 	public void setAdopted(boolean adopted) {
-		this.adopted = adopted;
+		super.setAdopted(adopted);
 	}
 	
 	public ExoticAnimal getExoticAnimal() {
@@ -77,5 +79,6 @@ public class ExoticAnimalAdapter implements Pet {
     	System.out.println("Adoption Status: " + this.isAdopted());
 		return this.exoticAnimal.toString();
 	}
+    
 
 }

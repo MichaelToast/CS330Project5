@@ -71,7 +71,16 @@ public abstract class NonExoticAnimal implements Pet{
 		return "[id=" + id + ", name=" + name + ", type=" + type + ", species=" + species + ", age="
 				+ age + ", adopted=" + adopted + "]";
 	}
-
-
+	
+	public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pet pet = (Pet) obj;
+        return this.getId().equals(this.getId());
+    }
+	
+	public int compareTo(Pet other) {
+        return this.getName().compareTo(other.getName());
+    }
 
 }

@@ -4,13 +4,10 @@ import java.util.Comparator;
 
 import mu.edu.pet.Pet;
 
-public class SortBySpecies implements Comparator {
+public class SortBySpecies implements Comparator<Pet> {
 
 	@Override
-	public int compare(Object o1, Object o2) {
-		Pet a = (Pet) o1;
-	    Pet b = (Pet) o2;
-	    return a.getSpecies().compareTo(b.getSpecies());
+	public int compare(Pet a, Pet b) {
+		return a.getSpecies().compareToIgnoreCase(b.getSpecies());
 	}
-
 }

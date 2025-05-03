@@ -4,15 +4,10 @@ import java.util.Comparator;
 
 import mu.edu.pet.Pet;
 
-public class SortByAge implements Comparator{
+public class SortByAge implements Comparator<Pet>{
 
 	@Override
-	public int compare(Object o1, Object o2) {
-		Pet a = (Pet) o1;
-	    Pet b = (Pet) o2;
-	    if (a.getAge() < b.getAge()) return -1; // The first Pet has a smaller Age
-	    if (a.getAge() > b.getAge()) return 1;  // The first Pet has a larger Age
-	    return 0;
+	public int compare(Pet a, Pet b) {
+		return Integer.compare(a.getAge(), b.getAge());
 	}
-
 }

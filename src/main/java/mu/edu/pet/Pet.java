@@ -72,6 +72,7 @@ public abstract class Pet {
 				+ age + ", adopted=" + adopted + "]";
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -79,6 +80,7 @@ public abstract class Pet {
         return this.getId().equals(pet.getId());
     }
 	
+	@Override
 	public int compareTo(Pet other) {
         return this.getName().compareTo(other.getName());
     }

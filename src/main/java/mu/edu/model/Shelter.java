@@ -32,4 +32,10 @@ public class Shelter <T extends Pet> {
 		return animalList.add(pet);
 	}
 	
+	public boolean removePet(String id) {
+		return animalList.removeIf(pet -> pet.getId().equals(id));
+	}
+	
+	
+	
 }

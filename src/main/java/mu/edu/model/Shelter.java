@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+import mu.edu.comparators.SortByName;
+import mu.edu.comparators.SortByAge;
+import mu.edu.comparators.SortBySpecies;
 import mu.edu.pet.Pet;
 
 public class Shelter <T extends Pet> {
@@ -71,11 +74,15 @@ public class Shelter <T extends Pet> {
 	}
 	
 	public void sortPetsByName() {
-		Collections.sort(animalList);
+		animalList.sort(new SortByAge());
 	}
 	
 	public void sortPetsByAge() {
-		Collections.sort(animalList, Comparator.comparing(Pet::getAge));
+		animalList.sort(new SortByAge());
+	}
+	
+	public void sortPetsBySpecies() {
+		animalList.sort(new SortBySpecies());
 	}
 	
 	public int getTotalPets() {

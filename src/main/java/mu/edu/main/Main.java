@@ -1,5 +1,6 @@
 package mu.edu.main;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
@@ -16,6 +17,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("Hello There!");
+		/*
 		
 		ArrayList<Pet> animals = new ArrayList<>();
 		ExoticAnimal Steve = new ExoticAnimal("exo001", "Steve", "Bear", "Black", 80);
@@ -32,6 +34,14 @@ public class Main {
 		
 		StevePet.setAdopted(true);
 		System.out.println(StevePet.isAdopted());
+		*/
+		
+		ShelterController controller = new ShelterController(
+				new Shelter(),
+				new AdoptionInputView());
+		controller.initiate();
+
+		controller.addAnimals("src/main/resources/pet.files/pets.json");
 		
 		// This is actually running the program: 		
 		SwingUtilities.invokeLater(new Runnable() {

@@ -18,7 +18,6 @@ public class ExoticAnimalAdapter extends Pet {
     public ExoticAnimalAdapter(String uniqueId, String animalName, String category, String subSpecies, int yearsOld) {
     	super(uniqueId, animalName, category, subSpecies, yearsOld);
     	//this.adopted = false; 
-    	
     }
     
 	public String getId() {

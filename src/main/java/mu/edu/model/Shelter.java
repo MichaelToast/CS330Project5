@@ -58,8 +58,28 @@ public class Shelter <T extends Pet> {
 				.collect(Collectors.toList());
 	}
 	
+	public List<T> getAdoptedPets() {
+		return animalList.stream()
+				.filter(Pet::isAdopted)
+				.collect(Collectors.toList());
+	}
 	
+	public List<T> getAvailablePets() {
+		return animalList.stream()
+				.filter(pet -> !pet.isAdopted())
+				.collect(Collectors.toList());
+	}
 	
+	public void sortPetsByName() {
+		Collections.sort(animalList);
+	}
 	
+	public void sortPetsByAge() {
+		Collections.sort(animalList, Comparator.comparing(Pet::getAge));
+	}
 	
+	public int getTotalPets() {
+		return animalList.size();
+	}
 }
+	

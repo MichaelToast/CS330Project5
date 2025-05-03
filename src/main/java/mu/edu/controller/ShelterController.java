@@ -55,12 +55,8 @@ public class ShelterController {
                 String name = (String) petMap.get("name");
                 String species = (String) petMap.get("species");
                 int age = ((Double) petMap.get("age")).intValue();
-                Boolean adoptionStatus = (Boolean) petMap.get("adoptionStatus");
-                if (adoptionStatus == null) {
-                	System.out.println("WHAT THE FU!");
-                    //adoptionStatus = false; // Default value if null
-                }
-
+                Boolean adoptionStatus = (Boolean) petMap.get("adopted");
+                
                 Pet pet = null;
                 switch (type) {
                     case "Dog":

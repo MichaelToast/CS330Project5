@@ -1,6 +1,6 @@
 package mu.edu.pet;
 
-public abstract class Pet {
+public abstract class Pet implements Comparable <Pet>{
 	private String id;
 	private String name;
 	private String type;

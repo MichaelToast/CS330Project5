@@ -33,6 +33,7 @@ public class Main {
 		StevePet.setAdopted(true);
 		System.out.println(StevePet.isAdopted());
 		
+		// This is actually running the program: 		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

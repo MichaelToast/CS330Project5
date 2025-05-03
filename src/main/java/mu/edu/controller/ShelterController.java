@@ -23,18 +23,19 @@ public class ShelterController {
 	}
 	
 	public void addAnimals(String fileName) {
-		// IMPORTANT NOTE: This is going to have to be able to read ExoticAnimals and NonExotic animals because of the way that we are storing the files. 
-		
-			// Tools
+		// Tools
 		// FileReader reader = new FileReader(fileName) // The files are stored in resources
 		// Going to have to use; shelter.getAnimalList().add()
-		// There is probably a fancy way to do this with "instance of Exotic Animal" OR you could do something with a tryCatch statment
+	}
+	
+	public void addExoticAnimals(String filename) {
+		
 	}
 	
 	
 	public void saveAnimalList () {
-		/* Save the pet list back to JSON file. For the saved file name, use the current date and time when the save button is clicked. Ex: YYYYMMDD HHMMSS pets.json
-		 * */
+		// Ekin said that some of the finer data may be lost when we have the file. 
+		// I am taking this as meaning we can convert all of the exotic animals to nonexotic animals as we go to save it
 	}
 
 }

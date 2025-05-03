@@ -2,6 +2,8 @@ package mu.edu.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 import mu.edu.pet.Pet;
 
@@ -19,6 +21,15 @@ public class Shelter <T extends Pet> {
 
 	public void setAnimalList(List<T> animalList) {
 		this.animalList = animalList;
+	}
+	
+	public boolean addPet(T pet) {
+		for(T existingPet : animalList) {
+			if (existingPet.getId().equals(pet.getId())) {
+				return false;
+			}
+		}
+		return animalList.add(pet);
 	}
 	
 }

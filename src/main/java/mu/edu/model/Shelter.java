@@ -87,5 +87,9 @@ public class Shelter <T extends Pet> {
 	public int getTotalPets() {
 		return animalList.size();
 	}
+
+	public int getSize() {
+		return animalList.size();
+	}
 }
 	

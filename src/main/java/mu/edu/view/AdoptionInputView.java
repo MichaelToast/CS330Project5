@@ -85,7 +85,7 @@ public class AdoptionInputView extends JFrame {
 	}
 	
 	
-	public void addSubmitListener(ActionListener listener) {
+	public void addActionListenerToSubmitButton(ActionListener listener) {
 		submitUserButton.addActionListener(listener);
 	}
 }

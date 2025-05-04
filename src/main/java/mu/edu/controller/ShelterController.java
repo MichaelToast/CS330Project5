@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,52 +34,15 @@ public class ShelterController {
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
 	
-public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
-    this.shelter = shelter;
-    this.inputView = inputView;
-    this.centerView = new AdoptionCenterView();
+	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
+	    this.shelter = shelter;
+	    this.inputView = inputView;
+	    this.inputView.addActionListenerToSubmitButton(new SubmitButtonActionListener());
+	    this.centerView = new AdoptionCenterView();
+		this.centerView.addActionListenerToDeletePetsButton(new DeletePetButtonActionListener());
+	}
 
-    this.inputView.addSubmitListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String name = inputView.getAnimalName();
-            Integer age = inputView.getAnimalAge();
-
-            if (name.isEmpty() || age == null || age <= 0) {
-                JOptionPane.showMessageDialog(null, "Please enter a name and age.");
-                return;
-            }
-
-            readNonExoticAnimalFile("src/main/resources/pets.json");
-            readExoticAnimalFile("src/main/resources/exotic_animals.json");
-            
-
-            centerView.setVisible(true);
-
-            centerView.updatePetList(shelter.getAvailablePets());
-        }
-    });
-
-    this.centerView.getDeleteButton().addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Pet selected = centerView.getSelectedPet();
-            if (selected != null) {
-                boolean removed = shelter.removePet(selected.getId());
-                if (removed) {
-                    centerView.getUserList().removeElement(selected);
-                    System.out.println("Deleted pet: " + selected.getName());
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to remove pet from model.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Please select a pet to delete.");
-            }
-        }
-    });
-}
-
-	
+    
 	public void initiate() {
 		inputView.setVisible(true);
 	}
@@ -108,13 +72,68 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
                 // THIS IS AN EXOTIC ANIMAL we have to create
         }
 		shelter.addPet(pet);
-		centerView.getUserList().addElement(pet);
+		centerView.getPetList().addElement(pet);
 		centerView.setVisible(true);
 
 			
 		}
 		
 	}
+	
+	private class DeletePetButtonActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			int[] multipleSelectedPetIndicies = centerView.getMultipleSelectedPets();
+			List<Pet> petList = new ArrayList<>();
+			for(int i=0; i<multipleSelectedPetIndicies.length; i++) {
+				petList.add(centerView.getPetList().get(multipleSelectedPetIndicies[i]));
+			}
+			
+			for(Pet pet1 : petList) {
+				centerView.getPetList().removeElement(pet1);
+				shelter.getAnimalList().remove(pet1);
+			}
+			
+			for(Pet pet : shelter.getAnimalList()) {
+				System.out.println("Pet: " + pet);
+			}
+		}
+	}
+
+	private class AdoptPetButtonActionListener implements ActionListener {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        // Get the indices of the selected pets from the JList
+	        int[] selectedPetIndices = centerView.getMultipleSelectedPets(); // This could be renamed to getMultipleSelectedPets() if that's more accurate.
+	        
+	        // Create a list to hold the selected pets
+	        List<Pet> selectedPets = new ArrayList<>();
+	        
+	        // Loop through selected indices and add the corresponding pets to the list
+	        for (int i = 0; i < selectedPetIndices.length; i++) {
+	            Pet selectedPet = centerView.getPetList().get(selectedPetIndices[i]); // Assuming getUserList() returns the DefaultListModel<Pet>
+	            selectedPets.add(selectedPet);
+	        }
+
+	        // Loop through the selected pets and set their adopted status to true
+	        for (Pet pet : selectedPets) {
+	            pet.setAdopted(true); // Call the setter to change the adoption status
+	        }
+	        
+	        // Now, you need to update the DefaultListModel to reflect these changes.
+	        // In a JList, the model typically controls the display, so we need to revalidate the list.
+	        //shelter.getAnimalList().fireContentsChanged(centerView, 0, shelter.getSize() - 1);
+
+	        // Optional: Print out to confirm the adoption status
+	        for (Pet pet : selectedPets) {
+	            System.out.println("Adopted Pet: " + pet);
+	        }
+	    }
+	}
+
 	
 	public void readNonExoticAnimalFile(String fileName) {
         try {

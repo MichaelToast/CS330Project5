@@ -18,7 +18,6 @@ public class AdoptionCenterView extends JFrame{
 	private JComboBox sortingDropDown;
 	
 	private DefaultListModel<Pet> modelList;
-	private JButton deleteSelectedAnimals;
 	private JButton adoptSelectedAnimals;
 
 	public AdoptionCenterView() {
@@ -38,9 +37,9 @@ public class AdoptionCenterView extends JFrame{
 		list.setBounds(119, 76, 368, 196);
 		panel.add(list);
 		
-        deleteSelectedAnimals = new JButton("Delete Selected Animals");
-        deleteSelectedAnimals.setBounds(100, 280, 180, 35);
-        panel.add(deleteSelectedAnimals);
+		deleteSelectedPets = new JButton("Delete Selected Animals");
+		deleteSelectedPets.setBounds(100, 280, 180, 35);
+        panel.add(deleteSelectedPets);
 		
 		adoptSelectedPets = new JButton("Adopt Selected Animals");
 		adoptSelectedPets.setBounds(309, 306, 161, 33);
@@ -67,14 +66,14 @@ public class AdoptionCenterView extends JFrame{
 	}
 	
 	public void addActionListenerToAdoptPetsButton(ActionListener listener) {
-		deleteSelectedPets.addActionListener(listener);
+		adoptSelectedPets.addActionListener(listener);
 	}
 	
-	public DefaultListModel<Pet> getUserList() {
+	public DefaultListModel<Pet> getPetList() {
 		return (DefaultListModel<Pet>) list.getModel();
 	}
 	
-	public int getSelectedUser() {
+	public int getSelectedPet() {
 		System.out.println("Selected Pet index: " + list.getSelectedIndex());
 		return list.getSelectedIndex();
 	}
@@ -90,12 +89,8 @@ public class AdoptionCenterView extends JFrame{
         }
     }
 
-    public Pet getSelectedPet() {
-        return (Pet) list.getSelectedValue();
-    }
-
     public JButton getDeleteButton() {
-        return deleteSelectedAnimals;
+        return deleteSelectedPets;
     }
 
     public JButton getAdoptButton() {

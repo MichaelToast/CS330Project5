@@ -41,7 +41,9 @@ public class Main {
 				new AdoptionInputView());
 		controller.initiate();
 
-		controller.addAnimals("src/main/resources/pet.files/pets.json");
+		//controller.addAnimals("src/main/resources/pet.files/pets.json");
+		controller.addExoticAnimals("src/main/resources/pet.files/exotic_animals.json");
+		controller.tempPrintShelter();
 		
 		// This is actually running the program: 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -58,3 +60,5 @@ public class Main {
 	}
 
 }
+
+/*This is a comment*/

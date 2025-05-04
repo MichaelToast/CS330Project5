@@ -1,12 +1,16 @@
 package mu.edu.controller;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -94,6 +98,19 @@ public class ShelterController {
 	
 	
 	public void saveAnimalList () {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String fileName = timeStamp + "_pets.json";
+
+        List<Pet> pets = shelter.getAnimalList();
+
+        Gson gson = new Gson();
+        String jsonOut = gson.toJson(pets);
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(jsonOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		// Ekin said that some of the finer data may be lost when we have the file. 
 		// I am taking this as meaning we can convert all of the exotic animals to nonexotic animals as we go to save it
 	}

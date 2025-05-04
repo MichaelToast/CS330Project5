@@ -45,9 +45,9 @@ public class ShelterController {
 		this.centerView.addActionListenerToDeletePetsButton(new DeletePetButtonActionListener());
 		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
 		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
+		this.centerView.addActionListenerToSaveButton(new SaveActionListener());
 	}
 
-    
 	public void initiate() {
 		inputView.setVisible(true);
 	}
@@ -120,8 +120,6 @@ public class ShelterController {
 	        }
 	    }
 	}
-	
-	
 
 	private class SortingActionListener implements ActionListener {
 	    @Override
@@ -159,7 +157,13 @@ public class ShelterController {
 	        }
 	    }
 	}
-
+	
+	private class SaveActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			saveAnimalList();
+		}
+		
+	}
 
 	
 	public void readNonExoticAnimalFile(String fileName) {
@@ -257,7 +261,6 @@ public class ShelterController {
 	        System.out.println("Error saving animal list");
 	    }
 	}
-	
 	
 	public void tempPrintShelter() {
 		for (Object obj : this.shelter.getAnimalList()) {

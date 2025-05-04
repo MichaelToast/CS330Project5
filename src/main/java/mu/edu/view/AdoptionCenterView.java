@@ -75,6 +75,10 @@ public class AdoptionCenterView extends JFrame{
 		dropdown.addActionListener(listener);
 	}
 	
+	public void addActionListenerToSaveButton(ActionListener listener) {
+		saveButton.addActionListener(listener);
+	}
+	
 	public DefaultListModel<Pet> getPetList() {
 		return (DefaultListModel<Pet>) list.getModel();
 	}

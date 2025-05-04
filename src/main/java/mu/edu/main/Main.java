@@ -55,7 +55,8 @@ public class Main {
 						new Shelter(),
 						new AdoptionInputView());
 				controller.initiate();
-
+				controller.readNonExoticAnimalFile("src/main/resources/pet.files/pets.json");
+				controller.readExoticAnimalFile("src/main/resources/pet.files/exotic_animals.json");
 			}
 		});
 		

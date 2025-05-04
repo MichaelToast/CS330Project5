@@ -124,3 +124,4 @@ public class AdoptionInputView extends JFrame {
 	public void addActionListenerToSubmitButton(ActionListener listener) {
 		submitPetButton.addActionListener(listener);
 	}
+}

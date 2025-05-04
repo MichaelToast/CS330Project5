@@ -14,6 +14,8 @@ import com.google.gson.reflect.TypeToken;
 import mu.edu.model.Shelter;
 import mu.edu.pet.Cat;
 import mu.edu.pet.Dog;
+import mu.edu.pet.ExoticAnimal;
+import mu.edu.pet.ExoticAnimalAdapter;
 import mu.edu.pet.Pet;
 import mu.edu.pet.Rabbit;
 import mu.edu.view.AdoptionCenterView;
@@ -75,7 +77,6 @@ public class ShelterController {
                     this.shelter.addPet(pet);
                 }
             }
-            // Print out pets to verify
 
 
         } catch (FileNotFoundException e) {
@@ -86,12 +87,45 @@ public class ShelterController {
 	
 	
 	public void addExoticAnimals(String filename) {
-		
+		System.out.println("Attempting to read the file!");
+        try {
+            FileReader reader = new FileReader(filename);
+            Gson gson = new Gson();
+
+            // Define the type for the list of pets
+            Type petListType = new TypeToken<List<Map<String, Object>>>(){}.getType();
+            List<Map<String, Object>> petList = gson.fromJson(reader, petListType);
+
+            for (Map<String, Object> petMap : petList) {
+                String uniqueId = (String) petMap.get("uniqueId");
+                String animalName = (String) petMap.get("animalName");
+                String category = (String) petMap.get("category");
+                String subSpecies = (String) petMap.get("subSpecies");
+                int yearsOld = ((Double) petMap.get("yearsOld")).intValue();
+                
+                Pet pet = null;
+                pet = new ExoticAnimalAdapter(new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld));
+                if (pet != null) {
+                    this.shelter.addPet(pet);
+                }
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void saveAnimalList () {
 		// Ekin said that some of the finer data may be lost when we have the file. 
 		// I am taking this as meaning we can convert all of the exotic animals to nonexotic animals as we go to save it
+	}
+	
+	public void tempPrintShelter() {
+		for (Object obj : this.shelter.getAnimalList()) {
+		    Pet p = (Pet) obj;
+		    System.out.println(p);
+		}
 	}
 
 }

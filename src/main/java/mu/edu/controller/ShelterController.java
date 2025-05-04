@@ -40,6 +40,13 @@ public class ShelterController {
 	private Double nonExoticIdCounter;	// Because of how it reads from files
 	private Integer exoticIdCounter; 
 	
+	/**
+	 * Constructs a new ShelterController with the specified shelter model and input view
+	 * Initializes action listeners for the input view and center view components
+	 * 
+	 * @param the shelter model that contains the pets
+	 * @param inputView the view for adding new pets
+	 */
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 	    this.shelter = shelter;
 	    this.inputView = inputView;
@@ -54,12 +61,24 @@ public class ShelterController {
 		this.nonExoticIdCounter = 0.0;
 		this.exoticIdCounter = 0;
 	}
-
+	/**
+	 * Initiates the application by setting the input view to be visible
+	 */
 	public void initiate() {
 		inputView.setVisible(true);
 	}
 	
+	/**
+	 * Private inner class that handles the submit button action events
+	 * Creates a new pet based on the input and adds it to the shelter and view
+	 */
 	private class SubmitButtonActionListener implements ActionListener {
+		/**
+		 * Invoked when the submit button is clicked
+		 * Creates a new pet based on the input data and adds it to the shelter and view
+		 * 
+		 * @param e the action event
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String type = inputView.getAnimalType();
@@ -94,9 +113,18 @@ public class ShelterController {
 		
 	}
 	
-	
+	/**
+	 * Private inner class that handles the delete button action events
+	 * Removes selected pets from the shelter and view
+	 */
 	private class DeletePetButtonActionListener implements ActionListener {
-	    @Override
+		/**
+		 * Invoked when the delete button is clicked.
+		 * Removes the selected pets from the shelter and view.
+		 * 
+		 * @param e the action event
+		 */
+		@Override
 	    public void actionPerformed(ActionEvent e) {
 	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
 	        Arrays.sort(multipleSelectedPetIndices);
@@ -110,9 +138,18 @@ public class ShelterController {
 	        centerView.setDialogue("Information has been Deleted");
 	    }
 	}
-
+	/**
+	 * Private inner class that handles the adopt button action events
+	 * Marks selected pets as adopted
+	 */
 	private class AdoptPetButtonActionListener implements ActionListener {
-	    @Override
+		/**
+		 * Invoked when the adopt button is clicked
+		 * Marks the selected pets as adopted if they are not already adopted
+		 * 
+		 * @param e the action event
+		 */
+		@Override
 	    public void actionPerformed(ActionEvent e) {
 	    	boolean errorEncountered = false; // So that the error doesn't dispapear
 	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
@@ -133,9 +170,18 @@ public class ShelterController {
 
 	    }
 	}
-
+	/**
+	 * Private inner class that handles the sorting dropdown action events
+	 * Sorts the pet list based on the selected criteria
+	 */
 	private class SortingActionListener implements ActionListener {
-	    @Override
+		/**
+		 * Invoked when a sorting option is selected from the dropdown
+		 * Sorts the pet list based on the selected criteria
+		 * 
+		 * @param e the action event
+		 */
+		@Override
 	    public void actionPerformed(ActionEvent e) {
 	    	String selectedOption = centerView.getSelectedDropdown();
 	        List<Pet> petList = new ArrayList<>();
@@ -170,15 +216,35 @@ public class ShelterController {
 	        }
 	    }
 	}
-	
+	/**
+	 * Private inner class that handles the save button action events
+	 * Saves the current pet list to a file
+	 */
 	private class SaveActionListener implements ActionListener {
+		/**
+		 * Invoked when the save button is clicked
+		 * Saves the current pet list to a file
+		 * 
+		 * @param e the action event
+		 */
 		public void actionPerformed(ActionEvent e) {
 			saveAnimalList();
 			centerView.setDialogue("Information has been Saved");
 		}
 	}
 	
+	/**
+	 * Private inner class that handles the view details button action events
+	 * Displays the count of exotic and non-exotic animals
+	 */
 	private class ViewDetailsButtonActionListener implements ActionListener {
+		
+		/**
+		 * Invoked when the view details button is clicked
+		 * Displays the count of exotic and non-exotic animals
+		 * 
+		 * @param e the action event
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			centerView.setDialogue("There are: " + nonExoticIdCounter + " Non-Exotic Animals, and " + exoticIdCounter + " Exotic Animals");
@@ -186,7 +252,11 @@ public class ShelterController {
 		
 	}
 
-	/*Read pets.json*/
+	/**
+	 * Reads non-exotic animal data from a JSON file and adds them to the shelter
+	 * 
+	 * @param fileName the name of the file to read from
+	 */
 	public void readNonExoticAnimalFile(String fileName) {
         try {
             FileReader reader = new FileReader(fileName);
@@ -236,7 +306,11 @@ public class ShelterController {
     }
 	
 	
-	/*Read exotic_animals.json*/
+	/**
+	 * Reads exotic animal data from a JSON file and adds them to the shelter using an adapter
+	 * 
+	 * @param filename the name of the file to read from
+	 */
 	public void readExoticAnimalFile(String filename) {
         try {
             FileReader reader = new FileReader(filename);
@@ -268,7 +342,10 @@ public class ShelterController {
 	}
 	
 	
-	/*Saves animal list with current time and date*/
+	/**
+	 * Saves the current animal list to a JSON file with a timestamp in the filename
+	 * The file is named with the current date and time
+	 */
 	public void saveAnimalList () {
 		LocalDateTime now = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");

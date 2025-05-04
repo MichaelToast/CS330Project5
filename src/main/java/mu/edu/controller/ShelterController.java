@@ -1,5 +1,6 @@
 package mu.edu.controller;
 
+import mu.edu.comparators.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
@@ -7,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import java.time.LocalDateTime;
@@ -39,11 +43,24 @@ public class ShelterController {
 	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
+	 // Used to automatically generate ID's
+	private Double nonExoticIdCounter;	// Because of how it reads from files
+	private Integer exoticIdCounter; 
 	
-public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
-    this.shelter = shelter;
-    this.inputView = inputView;
-    this.centerView = new AdoptionCenterView();
+	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
+	    this.shelter = shelter;
+	    this.inputView = inputView;
+	    this.inputView.addActionListenerToSubmitButton(new SubmitButtonActionListener());
+	    this.centerView = new AdoptionCenterView();
+		this.centerView.addActionListenerToDeletePetsButton(new DeletePetButtonActionListener());
+		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
+		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
+		this.centerView.addActionListenerToSaveButton(new SaveActionListener());
+		this.centerView.addActionListenerToViewDetailsButton(new ViewDetailsButtonActionListener());
+		
+		this.nonExoticIdCounter = 0.0;
+		this.exoticIdCounter = 0;
+	}
 
     //  Add listener to submit button to properly add Animals in list
     this.inputView.addSubmitListener(new ActionListener() {
@@ -181,36 +198,131 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 	private class SubmitButtonActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Need to see if what they a
 			String type = inputView.getAnimalType();
 			String tempId = "";
 			
 			Pet pet = null;
-			// 
+			
 			switch (type) {
             case "Dog":
-                pet = new Dog(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+            	nonExoticIdCounter ++;
+                pet = new Dog(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());  
                 break;
             case "Cat":
-                pet = new Cat(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                nonExoticIdCounter ++;
+                pet = new Cat(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             case "Rabbit":
-                pet = new Rabbit(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                nonExoticIdCounter ++;
+                pet = new Rabbit(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             default:
-            	System.out.println("kjfnsfdnskj");
+            	exoticIdCounter ++;
+            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo" + Integer.toString(exoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
             	break;
-                // THIS IS AN EXOTIC ANIMAL we have to create
         }
-		shelter.addPet(pet);
-		centerView.getUserList().addElement(pet);
+		shelter.getAnimalList().add(pet);
+		centerView.getPetList().addElement(pet);
 		centerView.setVisible(true);
+		centerView.setDialogue("Information has been Saved");
 
-			
 		}
 		
 	}
 	
+	
+	private class DeletePetButtonActionListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
+	        Arrays.sort(multipleSelectedPetIndices);
+	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
+	            int index = multipleSelectedPetIndices[i];
+	            Pet pet = centerView.getPetList().get(index);
+	            centerView.getPetList().removeElementAt(index);
+	            shelter.getAnimalList().remove(pet);
+	        }
+
+	        centerView.setDialogue("Information has been Deleted");
+	    }
+	}
+
+	private class AdoptPetButtonActionListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	    	boolean errorEncountered = false; // So that the error doesn't dispapear
+	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
+	        Arrays.sort(multipleSelectedPetIndices);
+	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
+	            int index = multipleSelectedPetIndices[i];
+	            Pet pet = centerView.getPetList().get(index);
+	            if (pet.isAdopted()) {
+	            	centerView.setDialogue("Pets Cannot be Adopted more than once!");
+	            	errorEncountered = true;
+	            }
+	            pet.setAdopted(true);
+	            centerView.getPetList().set(index, pet); 
+	        }
+	        if (!errorEncountered) {
+	        	centerView.setDialogue("Thank You!");
+	        }
+
+	    }
+	}
+
+	private class SortingActionListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	    	String selectedOption = centerView.getSelectedDropdown();
+	        List<Pet> petList = new ArrayList<>();
+
+	        // Temp list
+	        for (int i = 0; i < centerView.getPetList().size(); i++) {
+	            petList.add(centerView.getPetList().get(i));
+	        }
+
+	        switch (selectedOption) {
+	            case "Name":
+	                petList.sort(new SortByName());
+	                break;
+	            case "Age":
+	                petList.sort(new SortByAge());
+	                break;
+	            case "Species Name":
+	                petList.sort(new SortBySpecies());
+	                break;
+	            case "Default":
+	            default:
+	                // Maybe sort by ID or load from the original shelter list if needed
+	                petList = new ArrayList<>(shelter.getAnimalList());
+	                break;
+	        }
+
+	        // Clear and re-populate the list model to update the UI
+	        DefaultListModel<Pet> model = centerView.getPetList();
+	        model.clear();
+	        for (Pet pet : petList) {
+	            model.addElement(pet);
+	        }
+	    }
+	}
+	
+	private class SaveActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			saveAnimalList();
+			centerView.setDialogue("Information has been Saved");
+		}
+	}
+	
+	private class ViewDetailsButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			centerView.setDialogue("There are: " + nonExoticIdCounter + " Non-Exotic Animals, and " + exoticIdCounter + " Exotic Animals");
+		}
+		
+	}
+
+	/*Read pets.json*/
 	public void readNonExoticAnimalFile(String fileName) {
         try {
             FileReader reader = new FileReader(fileName);
@@ -247,6 +359,9 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 
                 if (pet != null) {
                     this.shelter.addPet(pet);
+                    centerView.getPetList().addElement(pet);
+            		centerView.setVisible(true);
+            		nonExoticIdCounter ++;
                 }
             }
 
@@ -256,13 +371,13 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
         }
     }
 	
+	
+	/*Read exotic_animals.json*/
 	public void readExoticAnimalFile(String filename) {
 		System.out.println("Attempting to read the file!");
         try {
             FileReader reader = new FileReader(filename);
             Gson gson = new Gson();
-
-            // Define the type for the list of pets
             Type petListType = new TypeToken<List<Map<String, Object>>>(){}.getType();
             List<Map<String, Object>> petList = gson.fromJson(reader, petListType);
 
@@ -277,6 +392,9 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
                 pet = new ExoticAnimalAdapter(new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld));
                 if (pet != null) {
                     this.shelter.addPet(pet);
+            		centerView.getPetList().addElement(pet);
+            		centerView.setVisible(true);
+            		exoticIdCounter ++;
                 }
             }
 
@@ -286,6 +404,8 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
         }
 	}
 	
+	
+	/*Saves animal list with current time and date*/
 	public void saveAnimalList () {
 		LocalDateTime now = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -306,13 +426,6 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 	        System.out.println("Error saving animal list");
 	    }
 	}
-	
-	
-	public void tempPrintShelter() {
-		for (Object obj : this.shelter.getAnimalList()) {
-		    Pet p = (Pet) obj;
-		    System.out.println(p);
-		}
-	}
+
 
 }

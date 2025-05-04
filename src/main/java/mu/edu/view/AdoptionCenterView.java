@@ -64,7 +64,7 @@ public class AdoptionCenterView extends JFrame {
     }
 
     public JButton getDeleteButton() {
-        return deleteSelectedAnimals;
+        return deleteSelectedPets;
     }
 
     public JButton getAdoptButton() {

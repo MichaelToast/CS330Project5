@@ -10,7 +10,7 @@ public class AdoptionInputView extends JFrame {
 	private JTextField animalTypeTextField;
 	private JTextField animalSpeciesTextField;
 	private JTextField animalAgeTextField;
-	private JButton submitPetButton;
+	private JButton submitUserButton;
 
 
 	
@@ -86,6 +86,8 @@ public class AdoptionInputView extends JFrame {
 	
 	
 	public void addSubmitListener(ActionListener listener) {
-		submitPetButton.addActionListener(listener);
+		submitUserButton.addActionListener(listener);
 	}
+	
+	
 }

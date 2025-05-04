@@ -1,7 +1,5 @@
 package mu.edu.pet;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class ExoticAnimalAdapter extends Pet {
     private ExoticAnimal exoticAnimal;

@@ -2,8 +2,7 @@ package mu.edu.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.stream.Collectors;
 
 import mu.edu.comparators.SortByName;
@@ -12,7 +11,7 @@ import mu.edu.comparators.SortBySpecies;
 import mu.edu.pet.Pet;
 
 public class Shelter <T extends Pet> {
-	// My Version of: UserInformationContainerModel 
+	// Our Version of: UserInformationContainerModel 
 	private List<T> animalList;
 	
 	public Shelter() {

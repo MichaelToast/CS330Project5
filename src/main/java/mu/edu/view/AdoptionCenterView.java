@@ -1,17 +1,15 @@
 package mu.edu.view;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import java.awt.event.ActionListener;
-import mu.edu.model.Shelter;
+import javax.swing.*;
+import java.util.List;
 import mu.edu.pet.Pet;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextArea; 
+
 
 public class AdoptionCenterView extends JFrame{
 	// My Version of UserInformationListView.java
@@ -23,15 +21,25 @@ public class AdoptionCenterView extends JFrame{
 	private JTextArea textArea;
 	private JComboBox sortingDropDown;
 	
+	private DefaultListModel<Pet> modelList;
+	private JButton deleteSelectedAnimals;
+	private JButton adoptSelectedAnimals;
+
 	public AdoptionCenterView() {
+
+		setTitle("Adoption Center");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600,450);
+		setLocationRelativeTo(null);
 		
 		panel = new JPanel();
+		panel.setLayout(null);
 		setContentPane(panel);
-		getContentPane().setLayout(null);
+
 		
-		DefaultListModel<Pet> modelList = new DefaultListModel<Pet>();
+		modelList = new DefaultListModel<>();
 		
-		list = new JList<Pet>(modelList);
+		list = new JList<>(modelList);
 		
 		list.setBounds(119, 76, 368, 196);
 		panel.add(list);
@@ -43,9 +51,10 @@ public class AdoptionCenterView extends JFrame{
 		adoptSelectedPets = new JButton("Addopt Selected Animals");
 		adoptSelectedPets.setBounds(309, 306, 161, 33);
 		panel.add(adoptSelectedPets);
+		adoptSelectedAnimals = new JButton("Adopt Selected Animals");
+		adoptSelectedAnimals.setBounds(309, 306, 161, 33);
+		panel.add(adoptSelectedAnimals);
 		
-		
-		/*
 		sortingDropDown = new JComboBox();
 		sortingDropDown.setBounds(119, 43, 56, 22);
 		panel.add(sortingDropDown);
@@ -57,7 +66,6 @@ public class AdoptionCenterView extends JFrame{
 		saveButton = new JButton("New button");
 		saveButton.setBounds(398, 43, 89, 23);
 		panel.add(saveButton);
-		*/
 	}
 	
 	public void addActionListenerToDeletePetsButton(ActionListener listener) {
@@ -80,6 +88,23 @@ public class AdoptionCenterView extends JFrame{
 	public int[] getMultipleSelectedPets() {
 		return list.getSelectedIndices();
 	}
-	
-	
+
+    public void updatePetList(List<Pet> pets) {
+        modelList.clear();
+        for (Pet pet : pets) {
+            modelList.addElement(pet);
+        }
+    }
+
+    public Pet getSelectedPet() {
+        return (Pet) list.getSelectedValue();
+    }
+
+    public JButton getDeleteButton() {
+        return deleteSelectedAnimals;
+    }
+
+    public JButton getAdoptButton() {
+        return adoptSelectedAnimals;
+    }
 }

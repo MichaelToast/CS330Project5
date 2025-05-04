@@ -1,16 +1,17 @@
 package mu.edu.controller;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,11 +27,11 @@ import mu.edu.view.AdoptionCenterView;
 import mu.edu.view.AdoptionInputView;
 
 public class ShelterController {
-	private Shelter shelter; 
+	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
 	
-	public ShelterController(Shelter shelter, AdoptionInputView inputView) {
+	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
 		this.inputView = inputView;
 		// this.centerView = centerView; 
@@ -39,8 +40,6 @@ public class ShelterController {
 	public void initiate() {
 		inputView.setVisible(true);
 	}
-	
-
 	
 	public void addAnimals(String fileName) {
 		System.out.println("Attempting to read the file!");
@@ -121,23 +120,25 @@ public class ShelterController {
 	}
 	
 	public void saveAnimalList () {
-	    LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 	    String fileName = now.format(formatter) + "_pets.json";
 	    
 	    try (FileWriter writer = new FileWriter(fileName)) {
 	        Gson gson = new Gson();
 	        
+	        // Serialize the whole list of pets to JSON
 	        List<Pet> pets = this.shelter.getAnimalList();
 	        
-	        // Write list as JSON
-	        gson.toJson(pets, writer);
+	        // Write the entire list as a JSON array
+	        gson.toJson(pets, writer);  // This serializes the list and writes it directly to the file
 
 	        System.out.println("Animal list saved to " + fileName);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	        System.out.println("Error saving animal list");
 	    }
+
 	}
 	
 	public void tempPrintShelter() {
@@ -148,4 +149,3 @@ public class ShelterController {
 	}
 
 }
-

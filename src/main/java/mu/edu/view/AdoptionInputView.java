@@ -37,11 +37,11 @@ public class AdoptionInputView extends JFrame {
 		submitUserButton.setBounds(229, 245, 101, 23);
 		panel.add(submitUserButton);
 		
-		JLabel lblNewLabel = new JLabel("Animal name:");
-		lblNewLabel.setBounds(161, 93, 70, 20);
+		JLabel lblNewLabel = new JLabel("Animal Name:");
+		lblNewLabel.setBounds(149, 93, 70, 20);
 		panel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Animal age:");
+		JLabel lblNewLabel_1 = new JLabel("Animal Age:");
 		lblNewLabel_1.setBounds(149, 138, 70, 14);
 		panel.add(lblNewLabel_1);
 		
@@ -55,12 +55,12 @@ public class AdoptionInputView extends JFrame {
 		panel.add(animalSpeciesTextField);
 		animalSpeciesTextField.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Animal Type");
+		JLabel lblNewLabel_2 = new JLabel("Animal Type:");
 		lblNewLabel_2.setBounds(145, 175, 86, 17);
 		panel.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("Animal Species");
-		lblNewLabel_3.setBounds(149, 217, 75, 14);
+		JLabel lblNewLabel_3 = new JLabel("Animal Species:");
+		lblNewLabel_3.setBounds(132, 217, 87, 14);
 		panel.add(lblNewLabel_3);
 	}
 

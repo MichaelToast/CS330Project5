@@ -13,7 +13,7 @@ public class AdoptionInputView extends JFrame {
 	private JButton submitUserButton;
 	
 	public AdoptionInputView() {
-		setTitle("Submit User Information Page");
+		setTitle("Submit Pet Information Page");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 400);
 		
@@ -36,11 +36,11 @@ public class AdoptionInputView extends JFrame {
 		panel.add(submitUserButton);
 		
 		JLabel lblNewLabel = new JLabel("Animal Name:");
-		lblNewLabel.setBounds(149, 93, 70, 20);
+		lblNewLabel.setBounds(134, 93, 70, 20);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Animal Age:");
-		lblNewLabel_1.setBounds(149, 138, 70, 14);
+		lblNewLabel_1.setBounds(134, 138, 70, 14);
 		panel.add(lblNewLabel_1);
 		
 		animalTypeTextField = new JTextField();
@@ -54,7 +54,7 @@ public class AdoptionInputView extends JFrame {
 		animalSpeciesTextField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Animal Type:");
-		lblNewLabel_2.setBounds(145, 175, 86, 17);
+		lblNewLabel_2.setBounds(132, 175, 86, 17);
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Animal Species:");

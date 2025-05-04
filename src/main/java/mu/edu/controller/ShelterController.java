@@ -238,7 +238,6 @@ public class ShelterController {
 	
 	/*Read exotic_animals.json*/
 	public void readExoticAnimalFile(String filename) {
-		System.out.println("Attempting to read the file!");
         try {
             FileReader reader = new FileReader(filename);
             Gson gson = new Gson();
@@ -282,7 +281,7 @@ public class ShelterController {
 	        List<Pet> pets = this.shelter.getAnimalList();
 	        
 	        // Write the entire list as a JSON array
-	        gson.toJson(pets, writer);  // This serializes the list and writes it directly to the file
+	        gson.toJson(pets, writer);
 
 	        System.out.println("Animal list saved to " + fileName);
 	    } catch (IOException e) {

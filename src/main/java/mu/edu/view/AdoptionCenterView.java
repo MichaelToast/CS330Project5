@@ -34,15 +34,15 @@ public class AdoptionCenterView extends JFrame{
 
 		modelList = new DefaultListModel<>();
 		list = new JList<>(modelList);
-		list.setBounds(119, 76, 368, 196);
+		list.setBounds(75, 76, 447, 196);
 		panel.add(list);
 		
 		deleteSelectedPets = new JButton("Delete Selected Animals");
-		deleteSelectedPets.setBounds(119, 284, 180, 33);
+		deleteSelectedPets.setBounds(85, 284, 180, 33);
         panel.add(deleteSelectedPets);
 		
         adoptSelectedAnimals = new JButton("Adopt Selected Animals");
-        adoptSelectedAnimals.setBounds(327, 284, 161, 33);
+        adoptSelectedAnimals.setBounds(338, 283, 161, 33);
 		panel.add(adoptSelectedAnimals);
 		
 		String[] options = {"Name", "Age", "Species Name"};
@@ -51,7 +51,7 @@ public class AdoptionCenterView extends JFrame{
 		panel.add(dropdown);
 		
 		saveButton = new JButton("Save List");
-		saveButton.setBounds(398, 43, 89, 23);
+		saveButton.setBounds(382, 43, 105, 23);
 		panel.add(saveButton);
 		
 		JLabel lblNewLabel = new JLabel();
@@ -65,7 +65,7 @@ public class AdoptionCenterView extends JFrame{
 		panel.add(dialogBox);
 		
 		viewDetailsButton = new JButton("View Details");
-		viewDetailsButton.setBounds(245, 42, 95, 23);
+		viewDetailsButton.setBounds(245, 42, 116, 23);
 		panel.add(viewDetailsButton);
 		
 	}

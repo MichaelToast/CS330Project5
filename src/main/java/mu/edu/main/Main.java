@@ -44,6 +44,7 @@ public class Main {
 		//controller.addAnimals("src/main/resources/pet.files/pets.json");
 		controller.addExoticAnimals("src/main/resources/pet.files/exotic_animals.json");
 		controller.tempPrintShelter();
+		controller.saveAnimalList();
 		
 		// This is actually running the program: 		
 		SwingUtilities.invokeLater(new Runnable() {

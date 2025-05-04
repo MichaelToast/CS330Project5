@@ -3,7 +3,11 @@ package mu.edu.controller;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -117,8 +121,25 @@ public class ShelterController {
 	}
 	
 	public void saveAnimalList () {
-		// Ekin said that some of the finer data may be lost when we have the file. 
-		// I am taking this as meaning we can convert all of the exotic animals to nonexotic animals as we go to save it
+	    // Get current date and time for the filename
+	    LocalDateTime now = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+	    String fileName = now.format(formatter) + "_pets.json";
+	    
+	    try (FileWriter writer = new FileWriter(fileName)) {
+	        Gson gson = new Gson();
+	        
+	        // Serialize the whole list of pets to JSON
+	        List<Pet> pets = this.shelter.getAnimalList();
+	        
+	        // Write the entire list as a JSON array
+	        gson.toJson(pets, writer);  // This serializes the list and writes it directly to the file
+
+	        System.out.println("Animal list saved to " + fileName);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        System.out.println("Error saving animal list");
+	    }
 	}
 	
 	public void tempPrintShelter() {

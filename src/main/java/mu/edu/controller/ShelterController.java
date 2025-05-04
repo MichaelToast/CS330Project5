@@ -49,8 +49,11 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
                 return;
             }
 
+            readNonExoticAnimalFile("src/main/resources/pets.json");
+            readExoticAnimalFile("src/main/resources/exotic_animals.json");
+            
+
             centerView.setVisible(true);
-            inputView.setVisible(false);
 
             centerView.updatePetList(shelter.getAvailablePets());
         }

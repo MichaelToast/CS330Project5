@@ -1,0 +1,50 @@
+[
+  {
+    "id": "manual-1746388900878",
+    "name": "Atlas",
+    "type": "Dog",
+    "species": "Puppy",
+    "age": 2,
+    "adopted": true
+  },
+  {
+    "id": "manual-1746388951066",
+    "name": "Easter Bunny",
+    "type": "Rabbit",
+    "species": "Bunny",
+    "age": 1,
+    "adopted": false
+  },
+  {
+    "id": "manual-1746388966599",
+    "name": "Tiger",
+    "type": "Cat",
+    "species": "Kitty",
+    "age": 3,
+    "adopted": true
+  },
+  {
+    "id": "manual-1746388985355",
+    "name": "Pluto",
+    "type": "Dog",
+    "species": "Puppy",
+    "age": 8,
+    "adopted": false
+  },
+  {
+    "id": "manual-1746389001690",
+    "name": "Meow",
+    "type": "Cat",
+    "species": "Kitty",
+    "age": 5,
+    "adopted": false
+  },
+  {
+    "id": "manual-1746389016828",
+    "name": "Hops",
+    "type": "Rabbit",
+    "species": "Bunny",
+    "age": 2,
+    "adopted": true
+  }
+]

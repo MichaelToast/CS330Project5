@@ -1,431 +1,179 @@
 package mu.edu.controller;
 
-import mu.edu.comparators.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-
+import mu.edu.comparators.SortByAge;
+import mu.edu.comparators.SortByName;
+import mu.edu.comparators.SortBySpecies;
 import mu.edu.model.Shelter;
-import mu.edu.pet.Cat;
-import mu.edu.pet.Dog;
-import mu.edu.pet.ExoticAnimal;
-import mu.edu.pet.ExoticAnimalAdapter;
-import mu.edu.pet.Pet;
-import mu.edu.pet.Rabbit;
+import mu.edu.pet.*;
 import mu.edu.view.AdoptionCenterView;
 import mu.edu.view.AdoptionInputView;
 
-import mu.edu.comparators.SortByName;
-import mu.edu.comparators.SortByAge;
-import mu.edu.comparators.SortBySpecies;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ShelterController {
-	private Shelter<Pet> shelter; 
-	private AdoptionInputView inputView;
-	private AdoptionCenterView centerView;
-	 // Used to automatically generate ID's
-	private Double nonExoticIdCounter;	// Because of how it reads from files
-	private Integer exoticIdCounter; 
-	
-	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
-	    this.shelter = shelter;
-	    this.inputView = inputView;
-	    this.inputView.addActionListenerToSubmitButton(new SubmitButtonActionListener());
-	    this.centerView = new AdoptionCenterView();
-		this.centerView.addActionListenerToDeletePetsButton(new DeletePetButtonActionListener());
-		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
-		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
-		this.centerView.addActionListenerToSaveButton(new SaveActionListener());
-		this.centerView.addActionListenerToViewDetailsButton(new ViewDetailsButtonActionListener());
-		
-		this.nonExoticIdCounter = 0.0;
-		this.exoticIdCounter = 0;
-	}
+    private final Shelter<Pet> shelter;
+    private final AdoptionInputView inputView;
+    private final AdoptionCenterView centerView;
 
-    //  Add listener to submit button to properly add Animals in list
-    this.inputView.addSubmitListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String name = inputView.getAnimalName();
-            Integer age = inputView.getAnimalAge();
-            String species = inputView.getAnimalSpecies();
-            String type = inputView.getAnimalType();
-            
-            // Requires valid input
-            if (name.isEmpty() || age == null || age <= 0 || species.isEmpty() || type.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please fill in all fields correctly.");
-                return;
-            }
-    
-            //  Create Pet from input
-            Pet pet = null;
-            String tempId = "manual-" + System.currentTimeMillis();
-            
-            // Handles creating pet based off of values
-            switch (type.toLowerCase()) {
-                case "dog":
-                    pet = new Dog(tempId, name, species, age);
-                    break;
-                case "cat":
-                    pet = new Cat(tempId, name, species, age);
-                    break;
-                case "rabbit":
-                    pet = new Rabbit(tempId, name, species, age);
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Unsupported type. Use Dog, Cat, or Rabbit.");
+    public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
+        this.shelter = shelter;
+        this.inputView = inputView;
+        this.centerView = new AdoptionCenterView();
+
+        // ✅ Submit button logic
+        this.inputView.addSubmitListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = inputView.getAnimalName();
+                Integer age = inputView.getAnimalAge();
+                String species = inputView.getAnimalSpecies();
+                String type = inputView.getAnimalType();
+
+                if (name.isEmpty() || age == null || age <= 0 || species.isEmpty() || type.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all fields correctly.");
                     return;
-            }
-    
-            shelter.addPet(pet);
-            centerView.updatePetList(shelter.getAvailablePets());
-            
-            // Keeps center view visible and input view open
-            centerView.setVisible(true);
-        }
-    });
-    
-     //  Add listener to delete button to properly delete Animals in list
-    this.centerView.getDeleteButton().addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Pet selected = centerView.getSelectedPet();
-            if (selected != null) {
-                boolean removed = shelter.removePet(selected.getId());
-                if (removed) {
-                    centerView.getUserList().removeElement(selected);
-                    System.out.println("Deleted pet: " + selected.getName());
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to remove pet from model.");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Please select a pet to delete.");
-            }
-        }
-    });
-    //  Add listener to adopt button to properly adopt Animals in list
-    centerView.getAdoptButton().addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Pet selected = centerView.getSelectedPet();
-    
-            if (selected == null) {
-                JOptionPane.showMessageDialog(null, "Please select a pet to adopt.");
-                return;
-            }
-    
-            if (selected.isAdopted()) {
-                JOptionPane.showMessageDialog(null, selected.getName() + " is already adopted.");
-                return;
-            }
-    
-            selected.setAdopted(true);
-            JOptionPane.showMessageDialog(null, "Congratulations! You adopted " + selected.getName() + ".");
-    
-            centerView.updatePetList(shelter.getAllPets());
-        }
-    });
-    //  Add listener to sort dropdown so the list can be sorted by selected option
-    centerView.getSortCombo().addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String selected = (String) centerView.getSortCombo().getSelectedItem();
-            List<Pet> pets = shelter.getAvailablePets();
-    
-            switch (selected) {
-                case "Sort by Name":
-                    pets.sort(new SortByName());
-                    break;
-                case "Sort by Age":
-                    pets.sort(new SortByAge());
-                    break;
-                case "Sort by Species":
-                    pets.sort(new SortBySpecies());
-                    break;
-                default:
-                    break;
-            }
-    
-            centerView.updatePetList(pets);
-        }
-    });
-    
-    //  Add listener to save button to save non-adopted pets to json file
-    centerView.getSaveButton().addActionListener(e -> {
-        List<Pet> petsToSave = shelter.getAllPets();
-    
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(petsToSave);
-    
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = "saved_animals_" + timestamp + ".json";
-    
-        try (FileWriter writer = new FileWriter(filename)) {
-            writer.write(json);
-            JOptionPane.showMessageDialog(null, "Animal list saved to " + filename);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Failed to save file.");
-        }
-    });    
-}
 
-	
-	public void initiate() {
-		inputView.setVisible(true);
-	}
-	
-	private class SubmitButtonActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String type = inputView.getAnimalType();
-			String tempId = "";
-			
-			Pet pet = null;
-			
-			switch (type) {
-            case "Dog":
-            	nonExoticIdCounter ++;
-                pet = new Dog(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());  
-                break;
-            case "Cat":
-                nonExoticIdCounter ++;
-                pet = new Cat(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
-                break;
-            case "Rabbit":
-                nonExoticIdCounter ++;
-                pet = new Rabbit(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
-                break;
-            default:
-            	exoticIdCounter ++;
-            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo" + Integer.toString(exoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
-            	break;
-        }
-		shelter.getAnimalList().add(pet);
-		centerView.getPetList().addElement(pet);
-		centerView.setVisible(true);
-		centerView.setDialogue("Information has been Saved");
-
-		}
-		
-	}
-	
-	
-	private class DeletePetButtonActionListener implements ActionListener {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
-	        Arrays.sort(multipleSelectedPetIndices);
-	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
-	            int index = multipleSelectedPetIndices[i];
-	            Pet pet = centerView.getPetList().get(index);
-	            centerView.getPetList().removeElementAt(index);
-	            shelter.getAnimalList().remove(pet);
-	        }
-
-	        centerView.setDialogue("Information has been Deleted");
-	    }
-	}
-
-	private class AdoptPetButtonActionListener implements ActionListener {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	    	boolean errorEncountered = false; // So that the error doesn't dispapear
-	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
-	        Arrays.sort(multipleSelectedPetIndices);
-	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
-	            int index = multipleSelectedPetIndices[i];
-	            Pet pet = centerView.getPetList().get(index);
-	            if (pet.isAdopted()) {
-	            	centerView.setDialogue("Pets Cannot be Adopted more than once!");
-	            	errorEncountered = true;
-	            }
-	            pet.setAdopted(true);
-	            centerView.getPetList().set(index, pet); 
-	        }
-	        if (!errorEncountered) {
-	        	centerView.setDialogue("Thank You!");
-	        }
-
-	    }
-	}
-
-	private class SortingActionListener implements ActionListener {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	    	String selectedOption = centerView.getSelectedDropdown();
-	        List<Pet> petList = new ArrayList<>();
-
-	        // Temp list
-	        for (int i = 0; i < centerView.getPetList().size(); i++) {
-	            petList.add(centerView.getPetList().get(i));
-	        }
-
-	        switch (selectedOption) {
-	            case "Name":
-	                petList.sort(new SortByName());
-	                break;
-	            case "Age":
-	                petList.sort(new SortByAge());
-	                break;
-	            case "Species Name":
-	                petList.sort(new SortBySpecies());
-	                break;
-	            case "Default":
-	            default:
-	                // Maybe sort by ID or load from the original shelter list if needed
-	                petList = new ArrayList<>(shelter.getAnimalList());
-	                break;
-	        }
-
-	        // Clear and re-populate the list model to update the UI
-	        DefaultListModel<Pet> model = centerView.getPetList();
-	        model.clear();
-	        for (Pet pet : petList) {
-	            model.addElement(pet);
-	        }
-	    }
-	}
-	
-	private class SaveActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			saveAnimalList();
-			centerView.setDialogue("Information has been Saved");
-		}
-	}
-	
-	private class ViewDetailsButtonActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			centerView.setDialogue("There are: " + nonExoticIdCounter + " Non-Exotic Animals, and " + exoticIdCounter + " Exotic Animals");
-		}
-		
-	}
-
-	/*Read pets.json*/
-	public void readNonExoticAnimalFile(String fileName) {
-        try {
-            FileReader reader = new FileReader(fileName);
-            Gson gson = new Gson();
-
-            // Define the type for the list of pets
-            Type petListType = new TypeToken<List<Map<String, Object>>>(){}.getType();
-            List<Map<String, Object>> petList = gson.fromJson(reader, petListType);
-
-            for (Map<String, Object> petMap : petList) {
-                String type = (String) petMap.get("type");
-                Double idTemp = ((Double) petMap.get("id"));
-                String id = String.valueOf(idTemp);
-
-                String name = (String) petMap.get("name");
-                String species = (String) petMap.get("species");
-                int age = ((Double) petMap.get("age")).intValue();
-                //Boolean adoptionStatus = (Boolean) petMap.get("adopted");
-                
                 Pet pet = null;
-                switch (type) {
-                    case "Dog":
-                        pet = new Dog(id, name, species, age);
+                String tempId = "manual-" + System.currentTimeMillis();
+
+                switch (type.toLowerCase()) {
+                    case "dog":
+                        pet = new Dog(tempId, name, species, age);
                         break;
-                    case "Cat":
-                        pet = new Cat(id, name, species, age);
+                    case "cat":
+                        pet = new Cat(tempId, name, species, age);
                         break;
-                    case "Rabbit":
-                        pet = new Rabbit(id, name, species, age);
+                    case "rabbit":
+                        pet = new Rabbit(tempId, name, species, age);
                         break;
                     default:
-                        System.out.println("Unknown pet type: " + type);
+                        JOptionPane.showMessageDialog(null, "Unsupported type. Use Dog, Cat, or Rabbit.");
+                        return;
                 }
 
-                if (pet != null) {
-                    this.shelter.addPet(pet);
-                    centerView.getPetList().addElement(pet);
-            		centerView.setVisible(true);
-            		nonExoticIdCounter ++;
+                shelter.addPet(pet);
+                centerView.updatePetList(shelter.getAllPets());
+
+                centerView.setVisible(true);
+            }
+        });
+
+        // ✅ Adopt button logic
+        centerView.getAdoptButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Pet selected = centerView.getSelectedPet();
+
+                if (selected == null) {
+                    JOptionPane.showMessageDialog(null, "Please select a pet to adopt.");
+                    return;
+                }
+
+                if (selected.isAdopted()) {
+                    JOptionPane.showMessageDialog(null, selected.getName() + " is already adopted.");
+                    return;
+                }
+
+                selected.setAdopted(true);
+                JOptionPane.showMessageDialog(null, "Congratulations! You adopted " + selected.getName() + ".");
+                centerView.updatePetList(shelter.getAllPets());
+            }
+        });
+
+        // ✅ Delete button logic
+        centerView.getDeleteButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Pet selected = centerView.getSelectedPet();
+                if (selected != null) {
+                    boolean removed = shelter.removePet(selected.getId());
+                    if (removed) {
+                        centerView.getUserList().removeElement(selected);
+                        System.out.println("Deleted pet: " + selected.getName());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to remove pet from model.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a pet to delete.");
                 }
             }
+        });
 
+        // ✅ Save button logic (all pets)
+        centerView.getSaveButton().addActionListener(e -> {
+            List<Pet> petsToSave = shelter.getAllPets(); // Include adopted pets
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(petsToSave);
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String filename = "saved_animals_" + timestamp + ".json";
 
-        } catch (FileNotFoundException e) {
+            try (FileWriter writer = new FileWriter(filename)) {
+                writer.write(json);
+                JOptionPane.showMessageDialog(null, "Animal list saved to " + filename);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to save file.");
+            }
+        });
+
+        // ✅ Sort dropdown logic
+        centerView.getSortCombo().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = (String) centerView.getSortCombo().getSelectedItem();
+                List<Pet> pets = shelter.getAllPets();
+
+                switch (selected) {
+                    case "Sort by Name":
+                        pets.sort(new SortByName());
+                        break;
+                    case "Sort by Age":
+                        pets.sort(new SortByAge());
+                        break;
+                    case "Sort by Species":
+                        pets.sort(new SortBySpecies());
+                        break;
+                    default:
+                        break;
+                }
+
+                centerView.updatePetList(pets);
+            }
+        });
+    }
+
+    // Optional file loaders
+    public void readNonExoticAnimalFile(String fileName) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(fileName)) {
+            Pet[] pets = gson.fromJson(reader, Pet[].class);
+            for (Pet pet : pets) {
+                shelter.addPet(pet);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-	
-	
-	/*Read exotic_animals.json*/
-	public void readExoticAnimalFile(String filename) {
-		System.out.println("Attempting to read the file!");
-        try {
-            FileReader reader = new FileReader(filename);
-            Gson gson = new Gson();
-            Type petListType = new TypeToken<List<Map<String, Object>>>(){}.getType();
-            List<Map<String, Object>> petList = gson.fromJson(reader, petListType);
 
-            for (Map<String, Object> petMap : petList) {
-                String uniqueId = (String) petMap.get("uniqueId");
-                String animalName = (String) petMap.get("animalName");
-                String category = (String) petMap.get("category");
-                String subSpecies = (String) petMap.get("subSpecies");
-                int yearsOld = ((Double) petMap.get("yearsOld")).intValue();
-                
-                Pet pet = null;
-                pet = new ExoticAnimalAdapter(new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld));
-                if (pet != null) {
-                    this.shelter.addPet(pet);
-            		centerView.getPetList().addElement(pet);
-            		centerView.setVisible(true);
-            		exoticIdCounter ++;
-                }
+    public void readExoticAnimalFile(String filename) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(filename)) {
+            ExoticAnimal[] exotics = gson.fromJson(reader, ExoticAnimal[].class);
+            for (ExoticAnimal exotic : exotics) {
+                shelter.addPet(new ExoticAnimalAdapter(exotic));
             }
-
-
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-	}
-	
-	
-	/*Saves animal list with current time and date*/
-	public void saveAnimalList () {
-		LocalDateTime now = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-	    String fileName = now.format(formatter) + "_pets.json";
-	    
-	    try (FileWriter writer = new FileWriter(fileName)) {
-	        Gson gson = new Gson();
-	        
-	        // Serialize the whole list of pets to JSON
-	        List<Pet> pets = this.shelter.getAnimalList();
-	        
-	        // Write the entire list as a JSON array
-	        gson.toJson(pets, writer);  // This serializes the list and writes it directly to the file
-
-	        System.out.println("Animal list saved to " + fileName);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        System.out.println("Error saving animal list");
-	    }
-	}
-
-
+    }
 }

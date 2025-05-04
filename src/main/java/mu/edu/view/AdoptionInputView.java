@@ -1,93 +1,89 @@
 package mu.edu.view;
 
 import javax.swing.*;
-
 import java.awt.event.ActionListener;
 
 public class AdoptionInputView extends JFrame {
-	private JPanel panel;
-	private JTextField animalNameTextField;
-	private JTextField animalTypeTextField;
-	private JTextField animalSpeciesTextField;
-	private JTextField animalAgeTextField;
-	private JButton submitUserButton;
+    private JPanel panel;
+    private JTextField animalNameTextField;
+    private JTextField animalAgeTextField;
+    private JTextField animalTypeTextField;
+    private JTextField animalSpeciesTextField;
+    private JButton submitUserButton;
 
+    public AdoptionInputView() {
+        setTitle("Adoption Input View");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 400);
+        setLocationRelativeTo(null);
 
-	
-	public AdoptionInputView() {
-		setTitle("Submit Pet Information Page");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 400);
-		
-		panel = new JPanel();
-		setContentPane(panel);
-		getContentPane().setLayout(null);
-		
-		animalNameTextField = new JTextField();
-		animalNameTextField.setBounds(229, 93, 96, 20);
-		panel.add(animalNameTextField);
-		animalNameTextField.setColumns(10);
-		
-		animalAgeTextField = new JTextField();
-		animalAgeTextField.setBounds(229, 135, 96, 20);
-		panel.add(animalAgeTextField);
-		animalAgeTextField.setColumns(10);
-		
-		submitPetButton = new JButton("Submit Pet");
-		submitPetButton.setBounds(229, 245, 101, 23);
-		panel.add(submitPetButton);
-		
-		JLabel lblNewLabel = new JLabel("Animal Name:");
-		lblNewLabel.setBounds(120, 93, 120, 20);
-		panel.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Animal Age:");
-		lblNewLabel_1.setBounds(120, 138, 120, 14);
-		panel.add(lblNewLabel_1);
-		
-		animalTypeTextField = new JTextField();
-		animalTypeTextField.setBounds(229, 173, 96, 20);
-		panel.add(animalTypeTextField);
-		animalTypeTextField.setColumns(10);
-		
-		animalSpeciesTextField = new JTextField();
-		animalSpeciesTextField.setBounds(229, 214, 96, 20);
-		panel.add(animalSpeciesTextField);
-		animalSpeciesTextField.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel("Animal Type:");
-		lblNewLabel_2.setBounds(120, 175, 120, 17);
-		panel.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("Animal Species:");
-		lblNewLabel_3.setBounds(120, 217, 120, 14);
-		panel.add(lblNewLabel_3);
-	}
+        panel = new JPanel();
+        panel.setLayout(null);
+        setContentPane(panel);
 
-	public String getAnimalName() {
-		return animalNameTextField.getText().trim();
-	}
+        // Animal Name
+        JLabel lblName = new JLabel("Animal Name:");
+        lblName.setBounds(120, 93, 120, 20);
+        panel.add(lblName);
 
-	public Integer getAnimalAge() {
-		try {
-			return Integer.parseInt(animalAgeTextField.getText().trim());
-		} catch (NumberFormatException e) {
-			return null;
-		}
-	}
-	
-	public String getAnimalType() {
-		return animalTypeTextField.getText().strip();
-	}
-	
-	public String getAnimalSpecies() {
-		return animalSpeciesTextField.getText().trim();
-	}
-	
-	
-	public void addSubmitListener(ActionListener listener) {
-		submitUserButton.addActionListener(listener);
-	}
-	
-	
+        animalNameTextField = new JTextField();
+        animalNameTextField.setBounds(229, 93, 120, 20);
+        panel.add(animalNameTextField);
+
+        // Animal Age
+        JLabel lblAge = new JLabel("Animal Age:");
+        lblAge.setBounds(120, 135, 120, 20);
+        panel.add(lblAge);
+
+        animalAgeTextField = new JTextField();
+        animalAgeTextField.setBounds(229, 135, 120, 20);
+        panel.add(animalAgeTextField);
+
+        // Animal Type
+        JLabel lblType = new JLabel("Animal Type:");
+        lblType.setBounds(120, 175, 120, 20);
+        panel.add(lblType);
+
+        animalTypeTextField = new JTextField();
+        animalTypeTextField.setBounds(229, 175, 120, 20);
+        panel.add(animalTypeTextField);
+
+        // Animal Species
+        JLabel lblSpecies = new JLabel("Animal Species:");
+        lblSpecies.setBounds(120, 217, 120, 20);
+        panel.add(lblSpecies);
+
+        animalSpeciesTextField = new JTextField();
+        animalSpeciesTextField.setBounds(229, 217, 120, 20);
+        panel.add(animalSpeciesTextField);
+
+        // Submit Button
+        submitUserButton = new JButton("Submit Pet");
+        submitUserButton.setBounds(229, 275, 120, 25);
+        panel.add(submitUserButton);
+    }
+
+    public String getAnimalName() {
+        return animalNameTextField.getText().trim();
+    }
+
+    public Integer getAnimalAge() {
+        try {
+            return Integer.parseInt(animalAgeTextField.getText().trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public String getAnimalType() {
+        return animalTypeTextField.getText().trim();
+    }
+
+    public String getAnimalSpecies() {
+        return animalSpeciesTextField.getText().trim();
+    }
+
+    public void addSubmitListener(ActionListener listener) {
+        submitUserButton.addActionListener(listener);
+    }
 }

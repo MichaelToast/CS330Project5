@@ -1,7 +1,6 @@
 package mu.edu.view;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import mu.edu.pet.Pet;
 
@@ -24,29 +23,29 @@ public class AdoptionCenterView extends JFrame {
         panel.setLayout(null);
         setContentPane(panel);
 
-        // 🔼 Sort Dropdown
+        // Sort Dropdown
         sortCombo = new JComboBox<>(new String[] { "Sort by Name", "Sort by Age", "Sort by Species" });
         sortCombo.setBounds(40, 20, 180, 30);
         panel.add(sortCombo);
 
-        // 💾 Save Button
+        // Save Button
         saveButton = new JButton("Save List to File");
         saveButton.setBounds(230, 20, 180, 30);
         panel.add(saveButton);
 
-        // 📜 Pet List
+        // Pet List
         modelList = new DefaultListModel<>();
         list = new JList<>(modelList);
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setBounds(40, 70, 500, 280);
         panel.add(scrollPane);
 
-        // 🐾 Adopt Button
+        // Adopt Button
         adoptSelectedAnimals = new JButton("Adopt Selected");
         adoptSelectedAnimals.setBounds(100, 370, 160, 40);
         panel.add(adoptSelectedAnimals);
 
-        // ❌ Delete Button
+        // Delete Button
         deleteSelectedAnimals = new JButton("Delete Selected");
         deleteSelectedAnimals.setBounds(320, 370, 160, 40);
         panel.add(deleteSelectedAnimals);
@@ -64,7 +63,7 @@ public class AdoptionCenterView extends JFrame {
     }
 
     public JButton getDeleteButton() {
-        return deleteSelectedPets;
+        return deleteSelectedAnimals;
     }
 
     public JButton getAdoptButton() {

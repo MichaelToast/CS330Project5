@@ -13,12 +13,13 @@ public class AdoptionCenterView extends JFrame{
 	private JList list;
 	private JButton deleteSelectedPets;
 	private JButton saveButton; 
-	private JTextArea textArea;
 	private JComboBox<String> dropdown;
 	
 	private DefaultListModel<Pet> modelList;
 	private JButton adoptSelectedAnimals;
-	private JTextArea txtrSortBy;
+	private JLabel dialogBox;
+	private JButton viewDetailsButton;
+	
 
 	public AdoptionCenterView() {
 
@@ -48,10 +49,6 @@ public class AdoptionCenterView extends JFrame{
 		dropdown = new JComboBox<>(options);
 		dropdown.setBounds(119, 43, 80, 22);
 		panel.add(dropdown);
-
-		textArea = new JTextArea();
-		textArea.setBounds(248, 354, 151, 22);
-		panel.add(textArea);
 		
 		saveButton = new JButton("Save List");
 		saveButton.setBounds(398, 43, 89, 23);
@@ -59,8 +56,18 @@ public class AdoptionCenterView extends JFrame{
 		
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setText("Sort By:");
-		lblNewLabel.setBounds(10, 42, 80, 22);
+		lblNewLabel.setBounds(29, 43, 80, 22);
 		panel.add(lblNewLabel);
+		
+		dialogBox = new JLabel();
+		dialogBox.setText("Welcome!");
+		dialogBox.setBounds(89,9,383,23);
+		panel.add(dialogBox);
+		
+		viewDetailsButton = new JButton("View Details");
+		viewDetailsButton.setBounds(245, 42, 95, 23);
+		panel.add(viewDetailsButton);
+		
 	}
 	
 	public void addActionListenerToDeletePetsButton(ActionListener listener) {
@@ -77,6 +84,14 @@ public class AdoptionCenterView extends JFrame{
 	
 	public void addActionListenerToSaveButton(ActionListener listener) {
 		saveButton.addActionListener(listener);
+	}
+	
+	public void addActionListenerToViewDetailsButton(ActionListener listener) {
+		viewDetailsButton.addActionListener(listener);
+	}
+	
+	public void setDialogue(String text) {
+		dialogBox.setText(text);
 	}
 	
 	public DefaultListModel<Pet> getPetList() {

@@ -82,8 +82,9 @@ public class AdoptionInputView extends JFrame {
 		return animalSpeciesTextField.getText().trim();
 	}
 	
-	
 	public void addActionListenerToSubmitButton(ActionListener listener) {
 		submitUserButton.addActionListener(listener);
 	}
+	
+	
 }

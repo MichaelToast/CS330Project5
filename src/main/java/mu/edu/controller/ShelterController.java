@@ -36,7 +36,8 @@ public class ShelterController {
 	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
-	private Integer nonExoticIdCounter; 
+	 // Used to automatically generate ID's
+	private Double nonExoticIdCounter;	// Because of how it reads from files
 	private Integer exoticIdCounter; 
 	
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
@@ -48,8 +49,9 @@ public class ShelterController {
 		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
 		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
 		this.centerView.addActionListenerToSaveButton(new SaveActionListener());
+		this.centerView.addActionListenerToViewDetailsButton(new ViewDetailsButtonActionListener());
 		
-		this.nonExoticIdCounter = 0;
+		this.nonExoticIdCounter = 0.0;
 		this.exoticIdCounter = 0;
 	}
 
@@ -68,31 +70,30 @@ public class ShelterController {
 			switch (type) {
             case "Dog":
             	nonExoticIdCounter ++;
-                pet = new Dog(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());  
+                pet = new Dog(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());  
                 break;
             case "Cat":
                 nonExoticIdCounter ++;
-                pet = new Cat(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                pet = new Cat(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             case "Rabbit":
                 nonExoticIdCounter ++;
-                pet = new Rabbit(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                pet = new Rabbit(Double.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             default:
             	exoticIdCounter ++;
-            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo:" + Integer.toString(exoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
+            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo" + Integer.toString(exoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
             	break;
         }
 		shelter.getAnimalList().add(pet);
 		centerView.getPetList().addElement(pet);
 		centerView.setVisible(true);
-		//nonExoticIdCounter ++;
-		//System.out.println("I AM A GENUS: " + nonExoticIdCounter);
+		centerView.setDialogue("Information has been Saved");
 
-			
 		}
 		
 	}
+	
 	
 	private class DeletePetButtonActionListener implements ActionListener {
 	    @Override
@@ -106,9 +107,7 @@ public class ShelterController {
 	            shelter.getAnimalList().remove(pet);
 	        }
 
-	        for (Pet pet : shelter.getAnimalList()) {
-	            System.out.println("Pet: " + pet);
-	        }
+	        centerView.setDialogue("Information has been Deleted");
 	    }
 	}
 
@@ -123,10 +122,8 @@ public class ShelterController {
 	            pet.setAdopted(true);
 	            centerView.getPetList().set(index, pet); 
 	        }
+	        centerView.setDialogue("Thank You!");
 
-	        for (Pet pet : shelter.getAnimalList()) {
-	            System.out.println("Pet: " + pet);
-	        }
 	    }
 	}
 
@@ -170,6 +167,14 @@ public class ShelterController {
 	private class SaveActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			saveAnimalList();
+			centerView.setDialogue("Information has been Saved");
+		}
+	}
+	
+	private class ViewDetailsButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			centerView.setDialogue("There are: " + nonExoticIdCounter + " Non-Exotic Animals, and " + exoticIdCounter + " Exotic Animals");
 		}
 		
 	}

@@ -34,7 +34,7 @@ public class Main {
 		
 		StevePet.setAdopted(true);
 		System.out.println(StevePet.isAdopted());
-		*/
+		
 		
 		ShelterController controller = new ShelterController(
 				new Shelter(),
@@ -45,8 +45,9 @@ public class Main {
 		controller.addExoticAnimals("src/main/resources/pet.files/exotic_animals.json");
 		controller.tempPrintShelter();
 		controller.saveAnimalList();
+		*/
 		
-		// This is actually running the program: 		
+			
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

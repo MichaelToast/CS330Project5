@@ -74,7 +74,7 @@ public class Shelter <T extends Pet> {
 	}
 	
 	public void sortPetsByName() {
-		animalList.sort(new SortByAge());
+		animalList.sort(new SortByName());
 	}
 	
 	public void sortPetsByAge() {

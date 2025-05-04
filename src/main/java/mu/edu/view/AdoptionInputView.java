@@ -1,10 +1,8 @@
 package mu.edu.view;
 
 import javax.swing.*;
-import java.awt.*;
 
 import java.awt.event.ActionListener;
-import mu.edu.model.Shelter; 
 
 public class AdoptionInputView extends JPanel{
 	private JTextField userNameTextField;

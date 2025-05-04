@@ -47,7 +47,7 @@ public class AdoptionCenterView extends JFrame{
 		deleteSelectedPets.setBounds(121, 304, 161, 36);
 		panel.add(deleteSelectedPets);
 		
-		adoptSelectedPets = new JButton("Addopt Selected Animals");
+		adoptSelectedPets = new JButton("Adopt Selected Animals");
 		adoptSelectedPets.setBounds(309, 306, 161, 33);
 		panel.add(adoptSelectedPets);
 		adoptSelectedAnimals = new JButton("Adopt Selected Animals");

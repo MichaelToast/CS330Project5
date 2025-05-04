@@ -33,8 +33,8 @@ public class ShelterController {
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
 		this.inputView = inputView;
+        this.centerView = new AdoptionCenterView();
 		this.inputView.addSubmitListener(new SubmitButtonActionListener());
-		//this.centerView = centerView; 
 	}
 	
 	public void initiate() {

@@ -101,7 +101,6 @@ public class ShelterController {
 	}
 
 	private class AdoptPetButtonActionListener implements ActionListener {
-
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
@@ -109,18 +108,16 @@ public class ShelterController {
 	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
 	            int index = multipleSelectedPetIndices[i];
 	            Pet pet = centerView.getPetList().get(index);
-	            pet.setAdopted(false);
-	            //centerView.getPetList().removeElementAt(index);
-	            //shelter.getAnimalList().remove(pet);
+	            pet.setAdopted(true);
+	            centerView.getPetList().set(index, pet); 
 	        }
 
 	        for (Pet pet : shelter.getAnimalList()) {
 	            System.out.println("Pet: " + pet);
 	        }
-	        
-	        //
 	    }
 	}
+
 
 	
 	public void readNonExoticAnimalFile(String fileName) {

@@ -1,5 +1,6 @@
 package mu.edu.controller;
 
+import mu.edu.comparators.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import java.time.LocalDateTime;
@@ -42,6 +44,7 @@ public class ShelterController {
 	    this.centerView = new AdoptionCenterView();
 		this.centerView.addActionListenerToDeletePetsButton(new DeletePetButtonActionListener());
 		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
+		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
 	}
 
     
@@ -114,6 +117,45 @@ public class ShelterController {
 
 	        for (Pet pet : shelter.getAnimalList()) {
 	            System.out.println("Pet: " + pet);
+	        }
+	    }
+	}
+	
+	
+
+	private class SortingActionListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	    	String selectedOption = centerView.getSelectedDropdown();
+	        List<Pet> petList = new ArrayList<>();
+
+	        // Temp list
+	        for (int i = 0; i < centerView.getPetList().size(); i++) {
+	            petList.add(centerView.getPetList().get(i));
+	        }
+
+	        switch (selectedOption) {
+	            case "Name":
+	                petList.sort(new SortByName());
+	                break;
+	            case "Age":
+	                petList.sort(new SortByAge());
+	                break;
+	            case "Species Name":
+	                petList.sort(new SortBySpecies());
+	                break;
+	            case "Default":
+	            default:
+	                // Maybe sort by ID or load from the original shelter list if needed
+	                petList = new ArrayList<>(shelter.getAnimalList());
+	                break;
+	        }
+
+	        // Clear and re-populate the list model to update the UI
+	        DefaultListModel<Pet> model = centerView.getPetList();
+	        model.clear();
+	        for (Pet pet : petList) {
+	            model.addElement(pet);
 	        }
 	    }
 	}

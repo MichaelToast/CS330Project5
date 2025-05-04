@@ -14,10 +14,11 @@ public class AdoptionCenterView extends JFrame{
 	private JButton deleteSelectedPets;
 	private JButton saveButton; 
 	private JTextArea textArea;
-	private JComboBox sortingDropDown;
+	private JComboBox<String> dropdown;
 	
 	private DefaultListModel<Pet> modelList;
 	private JButton adoptSelectedAnimals;
+	private JTextArea txtrSortBy;
 
 	public AdoptionCenterView() {
 
@@ -30,31 +31,36 @@ public class AdoptionCenterView extends JFrame{
 		panel.setLayout(null);
 		setContentPane(panel);
 
-		
 		modelList = new DefaultListModel<>();
 		list = new JList<>(modelList);
 		list.setBounds(119, 76, 368, 196);
 		panel.add(list);
 		
 		deleteSelectedPets = new JButton("Delete Selected Animals");
-		deleteSelectedPets.setBounds(100, 280, 180, 35);
+		deleteSelectedPets.setBounds(119, 284, 180, 33);
         panel.add(deleteSelectedPets);
 		
         adoptSelectedAnimals = new JButton("Adopt Selected Animals");
-        adoptSelectedAnimals.setBounds(309, 306, 161, 33);
+        adoptSelectedAnimals.setBounds(327, 284, 161, 33);
 		panel.add(adoptSelectedAnimals);
 		
-		sortingDropDown = new JComboBox();
-		sortingDropDown.setBounds(119, 43, 56, 22);
-		panel.add(sortingDropDown);
-		
+		String[] options = {"Name", "Age", "Species Name"};
+		dropdown = new JComboBox<>(options);
+		dropdown.setBounds(119, 43, 80, 22);
+		panel.add(dropdown);
+
 		textArea = new JTextArea();
-		textArea.setBounds(207, 351, 151, 22);
+		textArea.setBounds(248, 354, 151, 22);
 		panel.add(textArea);
 		
-		saveButton = new JButton("New button");
+		saveButton = new JButton("Save List");
 		saveButton.setBounds(398, 43, 89, 23);
 		panel.add(saveButton);
+		
+		txtrSortBy = new JTextArea();
+		txtrSortBy.setText("Sort By:");
+		txtrSortBy.setBounds(10, 42, 80, 22);
+		panel.add(txtrSortBy);
 	}
 	
 	public void addActionListenerToDeletePetsButton(ActionListener listener) {
@@ -63,6 +69,10 @@ public class AdoptionCenterView extends JFrame{
 	
 	public void addActionListenerToAdoptPetsButton(ActionListener listener) {
 		adoptSelectedAnimals.addActionListener(listener);
+	}
+	
+	public void addActionListenerToSortingDropDown(ActionListener listener) {
+		dropdown.addActionListener(listener);
 	}
 	
 	public DefaultListModel<Pet> getPetList() {
@@ -76,6 +86,10 @@ public class AdoptionCenterView extends JFrame{
 	
 	public int[] getMultipleSelectedPets() {
 		return list.getSelectedIndices();
+	}
+	
+	public String getSelectedDropdown() {
+		return (String) dropdown.getSelectedItem();
 	}
 
     public void updatePetList(List<Pet> pets) {

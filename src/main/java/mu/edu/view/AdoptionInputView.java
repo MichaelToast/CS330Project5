@@ -11,8 +11,6 @@ public class AdoptionInputView extends JFrame {
 	private JTextField animalSpeciesTextField;
 	private JTextField animalAgeTextField;
 	private JButton submitUserButton;
-
-
 	
 	public AdoptionInputView() {
 		setTitle("Submit User Information Page");

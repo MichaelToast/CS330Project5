@@ -26,11 +26,11 @@ import mu.edu.view.AdoptionCenterView;
 import mu.edu.view.AdoptionInputView;
 
 public class ShelterController {
-	private Shelter shelter; 
+	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
 	
-	public ShelterController(Shelter shelter, AdoptionInputView inputView) {
+	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
 		this.inputView = inputView;
 		// this.centerView = centerView; 

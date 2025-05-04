@@ -34,7 +34,6 @@ public class ShelterController {
 		inputView.setVisible(true);
 	}
 	
-	private List<Pet> pets = new ArrayList<>();				//asjbsdjfbukasdnfsdbiusfbiusfd
 
 	
 	public void addAnimals(String fileName) {
@@ -55,7 +54,7 @@ public class ShelterController {
                 String name = (String) petMap.get("name");
                 String species = (String) petMap.get("species");
                 int age = ((Double) petMap.get("age")).intValue();
-                Boolean adoptionStatus = (Boolean) petMap.get("adopted");
+                //Boolean adoptionStatus = (Boolean) petMap.get("adopted");
                 
                 Pet pet = null;
                 switch (type) {
@@ -73,13 +72,13 @@ public class ShelterController {
                 }
 
                 if (pet != null) {
-                    pets.add(pet);
+                    this.shelter.addPet(pet);
                 }
             }
-
             // Print out pets to verify
-            for (Pet p : pets) {
-                System.out.println(p);
+            for (Object obj : shelter.getAnimalList()) {
+                Pet p = (Pet) obj;
+                System.out.println(p.getName());
             }
 
         } catch (FileNotFoundException e) {
@@ -87,7 +86,6 @@ public class ShelterController {
         }
     }
 
-		
 	
 	
 	public void addExoticAnimals(String filename) {

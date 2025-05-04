@@ -76,10 +76,7 @@ public class ShelterController {
                 }
             }
             // Print out pets to verify
-            for (Object obj : shelter.getAnimalList()) {
-                Pet p = (Pet) obj;
-                System.out.println(p.getName());
-            }
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -91,7 +88,6 @@ public class ShelterController {
 	public void addExoticAnimals(String filename) {
 		
 	}
-	
 	
 	public void saveAnimalList () {
 		// Ekin said that some of the finer data may be lost when we have the file. 

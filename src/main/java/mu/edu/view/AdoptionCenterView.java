@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.util.List;
 import mu.edu.pet.Pet;
 
-import java.awt.event.ActionListener;
-
-import javax.swing.JComboBox;
-import javax.swing.JTextArea; 
+import java.awt.event.ActionListener; 
 
 
 public class AdoptionCenterView extends JFrame{
@@ -37,15 +34,13 @@ public class AdoptionCenterView extends JFrame{
 
 		
 		modelList = new DefaultListModel<>();
-		
 		list = new JList<>(modelList);
-		
 		list.setBounds(119, 76, 368, 196);
 		panel.add(list);
 		
-		deleteSelectedPets = new JButton("Delete Selected Animals");
-		deleteSelectedPets.setBounds(121, 304, 161, 36);
-		panel.add(deleteSelectedPets);
+        deleteSelectedAnimals = new JButton("Delete Selected Animals");
+        deleteSelectedAnimals.setBounds(100, 280, 180, 35);
+        panel.add(deleteSelectedAnimals);
 		
 		adoptSelectedPets = new JButton("Adopt Selected Animals");
 		adoptSelectedPets.setBounds(309, 306, 161, 33);

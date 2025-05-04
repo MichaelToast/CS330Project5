@@ -12,9 +12,6 @@ public class AdoptionInputView extends JFrame {
 	private JTextField animalAgeTextField;
 	private JButton submitUserButton;
 
-	private JLabel lblNewLabel_3;
-	private JTextField textField;
-	private JLabel lblNewLabel_4;
 
 	
 	public AdoptionInputView() {
@@ -37,7 +34,7 @@ public class AdoptionInputView extends JFrame {
 		animalAgeTextField.setColumns(10);
 		
 		submitUserButton = new JButton("Submit User");
-		submitUserButton.setBounds(229, 288, 101, 23);
+		submitUserButton.setBounds(229, 245, 101, 23);
 		panel.add(submitUserButton);
 		
 		JLabel lblNewLabel = new JLabel("Animal name:");
@@ -62,25 +59,16 @@ public class AdoptionInputView extends JFrame {
 		lblNewLabel_2.setBounds(145, 175, 86, 17);
 		panel.add(lblNewLabel_2);
 		
-		lblNewLabel_3 = new JLabel("Animal Species");
+		JLabel lblNewLabel_3 = new JLabel("Animal Species");
 		lblNewLabel_3.setBounds(149, 217, 75, 14);
 		panel.add(lblNewLabel_3);
-		
-		textField = new JTextField();
-		textField.setBounds(229, 245, 96, 20);
-		panel.add(textField);
-		textField.setColumns(10);
-		
-		lblNewLabel_4 = new JLabel("Animal Age");
-		lblNewLabel_4.setBounds(145, 248, 74, 14);
-		panel.add(lblNewLabel_4);
 	}
 
-	public String getUserName() {
+	public String getAnimalName() {
 		return animalNameTextField.getText().trim();
 	}
 
-	public Integer getUserAge() {
+	public Integer getAnimalAge() {
 		try {
 			return Integer.parseInt(animalAgeTextField.getText().trim());
 		} catch (NumberFormatException e) {
@@ -88,7 +76,15 @@ public class AdoptionInputView extends JFrame {
 		}
 	}
 	
-
+	public String getAnimalType() {
+		return animalTypeTextField.getText().strip();
+	}
+	
+	public String getAnimalSpecies() {
+		return animalSpeciesTextField.getText().trim();
+	}
+	
+	
 	public void addSubmitListener(ActionListener listener) {
 		submitUserButton.addActionListener(listener);
 	}

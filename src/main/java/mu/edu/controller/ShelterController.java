@@ -38,12 +38,10 @@ public class ShelterController {
 	}
 	
 	public void initiate() {
-		//System.out.println("INITIALIZING");
 		inputView.setVisible(true);
 	}
 	
 	public void addAnimals(String fileName) {
-		System.out.println("Attempting to read the file!");
         try {
             FileReader reader = new FileReader(fileName);
             Gson gson = new Gson();
@@ -87,8 +85,6 @@ public class ShelterController {
             e.printStackTrace();
         }
     }
-
-	
 	
 	public void addExoticAnimals(String filename) {
 		System.out.println("Attempting to read the file!");

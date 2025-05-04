@@ -3,8 +3,7 @@ package mu.edu.view;
 import javax.swing.*;
 import java.util.List;
 import mu.edu.pet.Pet;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;

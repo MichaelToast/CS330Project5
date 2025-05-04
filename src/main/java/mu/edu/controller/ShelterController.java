@@ -33,6 +33,7 @@ public class ShelterController {
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
 		this.inputView = inputView;
+		this.inputView.addSubmitListener(new SubmitButtonActionListener());
 		//this.centerView = centerView; 
 	}
 	
@@ -60,6 +61,8 @@ public class ShelterController {
                 pet = new Rabbit(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             default:
+            	System.out.println("kjfnsfdnskj");
+            	break;
                 // THIS IS AN EXOTIC ANIMAL we have to create
         }
 		shelter.addPet(pet);

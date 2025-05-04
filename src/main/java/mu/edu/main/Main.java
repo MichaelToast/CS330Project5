@@ -61,7 +61,4 @@ public class Main {
 
 }
 
-/*COMMMENTS
- * 
- * 
- * */
+/*This is a comment*/

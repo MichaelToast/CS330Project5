@@ -1,32 +1,33 @@
 package mu.edu.view;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import java.awt.event.ActionListener;
-import mu.edu.model.Shelter;
+import javax.swing.*;
+import java.util.List;
 import mu.edu.pet.Pet;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent; 
+
 
 public class AdoptionCenterView extends JFrame{
 	// My Version of UserInformationListView.java
 	private JPanel panel;
-	private JList list;
+	private JList<Pet> list;
+	private DefaultListModel<Pet> modelList;
 	private JButton deleteSelectedAnimals;
 	private JButton adoptSelectedAnimals;
 	
 	public AdoptionCenterView() {
+
+		setTitle("Adoption Center");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600,450);
+		setLocationRelativeTo(null);
 		
 		panel = new JPanel();
+		panel.setLayout(null);
 		setContentPane(panel);
-		getContentPane().setLayout(null);
+
 		
-		DefaultListModel<Pet> modelList = new DefaultListModel<Pet>();
+		modelList = new DefaultListModel<>();
 		
-		list = new JList<Pet>(modelList);
+		list = new JList<>(modelList);
 		
 		list.setBounds(119, 76, 368, 196);
 		panel.add(list);
@@ -35,9 +36,29 @@ public class AdoptionCenterView extends JFrame{
 		deleteSelectedAnimals.setBounds(121, 304, 161, 36);
 		panel.add(deleteSelectedAnimals);
 		
-		adoptSelectedAnimals = new JButton("Addopt Selected Animals");
+		adoptSelectedAnimals = new JButton("Adopt Selected Animals");
 		adoptSelectedAnimals.setBounds(309, 306, 161, 33);
 		panel.add(adoptSelectedAnimals);
 		
 	}
+
+    public void updatePetList(List<Pet> pets) {
+        modelList.clear();
+        for (Pet pet : pets) {
+            modelList.addElement(pet);
+        }
+    }
+
+    public Pet getSelectedPet() {
+        return list.getSelectedValue();
+    }
+
+    public JButton getDeleteButton() {
+        return deleteSelectedAnimals;
+    }
+
+    public JButton getAdoptButton() {
+        return adoptSelectedAnimals;
+    }
+
 }

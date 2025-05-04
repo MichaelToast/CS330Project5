@@ -34,10 +34,11 @@ public class ShelterController {
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 		this.shelter = shelter; 
 		this.inputView = inputView;
-		// this.centerView = centerView; 
+		//this.centerView = centerView; 
 	}
 	
 	public void initiate() {
+		//System.out.println("INITIALIZING");
 		inputView.setVisible(true);
 	}
 	

@@ -16,7 +16,6 @@ import mu.edu.view.AdoptionInputView;
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("Hello There!");
 		/*
 		
 		ArrayList<Pet> animals = new ArrayList<>();

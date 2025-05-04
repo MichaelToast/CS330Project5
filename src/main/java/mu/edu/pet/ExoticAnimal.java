@@ -58,8 +58,8 @@ public class ExoticAnimal {
 
 	@Override
 	public String toString() {
-		return "ExoticAnimal [uniqueId=" + uniqueId + ", animalName=" + animalName + ", category=" + category
-				+ ", subSpecies=" + subSpecies + ", yearsOld=" + yearsOld + "]";
+		return animalName + " (" + uniqueId + ", " + "Exotic" + ", " + category
+				+ ", " + subSpecies + ", Age: " + yearsOld + ")";
 	}
 	
 	

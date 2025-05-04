@@ -10,7 +10,7 @@ public class AdoptionInputView extends JFrame {
 	private JTextField animalTypeTextField;
 	private JTextField animalSpeciesTextField;
 	private JTextField animalAgeTextField;
-	private JButton submitUserButton;
+	private JButton submitPetButton;
 	
 	public AdoptionInputView() {
 		setTitle("Submit Pet Information Page");
@@ -31,16 +31,16 @@ public class AdoptionInputView extends JFrame {
 		panel.add(animalAgeTextField);
 		animalAgeTextField.setColumns(10);
 		
-		submitUserButton = new JButton("Submit User");
-		submitUserButton.setBounds(229, 245, 101, 23);
-		panel.add(submitUserButton);
+		submitPetButton = new JButton("Submit Pet");
+		submitPetButton.setBounds(229, 245, 100, 23);
+		panel.add(submitPetButton);
 		
 		JLabel lblNewLabel = new JLabel("Animal Name:");
-		lblNewLabel.setBounds(134, 93, 70, 20);
+		lblNewLabel.setBounds(134, 93, 1200, 20);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Animal Age:");
-		lblNewLabel_1.setBounds(134, 138, 70, 14);
+		lblNewLabel_1.setBounds(134, 138, 120, 14);
 		panel.add(lblNewLabel_1);
 		
 		animalTypeTextField = new JTextField();
@@ -54,11 +54,11 @@ public class AdoptionInputView extends JFrame {
 		animalSpeciesTextField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Animal Type:");
-		lblNewLabel_2.setBounds(132, 175, 86, 17);
+		lblNewLabel_2.setBounds(132, 175, 120, 17);
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Animal Species:");
-		lblNewLabel_3.setBounds(132, 217, 87, 14);
+		lblNewLabel_3.setBounds(132, 217, 120, 14);
 		panel.add(lblNewLabel_3);
 	}
 
@@ -83,7 +83,7 @@ public class AdoptionInputView extends JFrame {
 	}
 	
 	public void addActionListenerToSubmitButton(ActionListener listener) {
-		submitUserButton.addActionListener(listener);
+		submitPetButton.addActionListener(listener);
 	}
 	
 	

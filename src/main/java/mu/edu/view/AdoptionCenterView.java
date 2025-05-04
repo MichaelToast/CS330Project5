@@ -34,7 +34,7 @@ public class AdoptionCenterView extends JFrame{
 
 		modelList = new DefaultListModel<>();
 		list = new JList<>(modelList);
-		list.setBounds(75, 76, 447, 196);
+		list.setBounds(75, 76, 500, 196);
 		panel.add(list);
 		
 		deleteSelectedPets = new JButton("Delete Selected Animals");
@@ -42,30 +42,30 @@ public class AdoptionCenterView extends JFrame{
         panel.add(deleteSelectedPets);
 		
         adoptSelectedAnimals = new JButton("Adopt Selected Animals");
-        adoptSelectedAnimals.setBounds(338, 283, 161, 33);
+        adoptSelectedAnimals.setBounds(338, 283, 180, 33);
 		panel.add(adoptSelectedAnimals);
 		
 		String[] options = {"Name", "Age", "Species Name"};
 		dropdown = new JComboBox<>(options);
-		dropdown.setBounds(119, 43, 80, 22);
+		dropdown.setBounds(119, 43, 120, 22);
 		panel.add(dropdown);
 		
 		saveButton = new JButton("Save List");
-		saveButton.setBounds(382, 43, 105, 23);
+		saveButton.setBounds(382, 43, 110, 23);
 		panel.add(saveButton);
 		
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setText("Sort By:");
-		lblNewLabel.setBounds(29, 43, 80, 22);
+		lblNewLabel.setBounds(29, 43, 50, 22);
 		panel.add(lblNewLabel);
 		
 		dialogBox = new JLabel();
 		dialogBox.setText("Welcome!");
-		dialogBox.setBounds(89,9,383,23);
+		dialogBox.setBounds(89,9,390,23);
 		panel.add(dialogBox);
 		
 		viewDetailsButton = new JButton("View Details");
-		viewDetailsButton.setBounds(245, 42, 116, 23);
+		viewDetailsButton.setBounds(245, 42, 120, 23);
 		panel.add(viewDetailsButton);
 		
 	}

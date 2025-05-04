@@ -4,6 +4,11 @@ import javax.swing.*;
 
 import java.awt.event.ActionListener;
 
+/**
+ * The AdoptionInputView class provides a GUI for users to input information about
+ * a new pet to be added to the adoption system
+ * It collects pet details such as name, age, type, and species.
+ */
 public class AdoptionInputView extends JFrame {
 	private JPanel panel;
 	private JTextField animalNameTextField;
@@ -12,6 +17,10 @@ public class AdoptionInputView extends JFrame {
 	private JTextField animalAgeTextField;
 	private JButton submitPetButton;
 	
+	/**
+	 * Constructs a new AdoptionInputView with all necessary UI components
+	 * Sets up the main JFrame and text fields for entering pet information
+	 */
 	public AdoptionInputView() {
 		setTitle("Submit Pet Information Page");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -62,10 +71,22 @@ public class AdoptionInputView extends JFrame {
 		panel.add(lblNewLabel_3);
 	}
 
+	/**
+	 * Gets the name of the animal entered by the user
+	 * Trims any leading/trailing whitespace.
+	 * 
+	 * @return The animal name as a String
+	 */
 	public String getAnimalName() {
 		return animalNameTextField.getText().trim();
 	}
 
+	/**
+	 * Gets the age of the animal entered by the user
+	 * Attempts to parse the text as an integer
+	 * 
+	 * @return The animal age as an Integer, or null if the input is not a valid integer
+	 */
 	public Integer getAnimalAge() {
 		try {
 			return Integer.parseInt(animalAgeTextField.getText().trim());
@@ -74,17 +95,32 @@ public class AdoptionInputView extends JFrame {
 		}
 	}
 	
+	/**
+	 * Gets the type of the animal entered by the user
+	 * Uses strip() to remove leading/trailing whitespace
+	 * 
+	 * @return The animal type as a String
+	 */
 	public String getAnimalType() {
 		return animalTypeTextField.getText().strip();
 	}
 	
+	/**
+	 * Gets the species of the animal entered by the user
+	 * Trims any leading/trailing whitespace
+	 * 
+	 * @return The animal species as a String
+	 */
 	public String getAnimalSpecies() {
 		return animalSpeciesTextField.getText().trim();
 	}
 	
+	/**
+	 * Adds an ActionListener to the submit button
+	 * This listener will handle the action when the user submits the pet information
+	 * 
+	 * @param listener The ActionListener to add
+	 */
 	public void addActionListenerToSubmitButton(ActionListener listener) {
 		submitPetButton.addActionListener(listener);
 	}
-	
-	
-}

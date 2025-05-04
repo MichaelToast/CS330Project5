@@ -13,8 +13,17 @@ import mu.edu.pet.ExoticAnimalAdapter;
 import mu.edu.pet.Pet;
 import mu.edu.view.AdoptionInputView;
 
+/**
+ * Main entry point for the Pet Adoption System application
+ * This class initializes the MVC components and 
+ * starts the application
+ */
 public class Main {
-
+	/**
+	 * The main method that launches the Pet Adoption System application
+	 * It creates the Shelter model, AdoptionInputView, and ShelterController,
+	 * and loads pet data from JSON files
+	 */
 	public static void main(String[] args) {
 		/*
 		
@@ -48,6 +57,10 @@ public class Main {
 		
 			
 		SwingUtilities.invokeLater(new Runnable() {
+			/**
+			 * Run method called by SwingUtilities.invokeLater to initialize the application
+			 * on the Event Dispatch Thread.
+			 */
 			@Override
 			public void run() {
 				ShelterController controller = new ShelterController(

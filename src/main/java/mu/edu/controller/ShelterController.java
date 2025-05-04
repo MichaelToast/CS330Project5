@@ -62,11 +62,9 @@ public class ShelterController {
             default:
                 // THIS IS AN EXOTIC ANIMAL we have to create
         }
-        /*
-         * Now we have to actually add the animal to the list
-         * 
-         * 
-         * */
+		shelter.addPet(pet);
+		centerView.getUserList().addElement(pet);
+		centerView.setVisible(true);
 
 			
 		}

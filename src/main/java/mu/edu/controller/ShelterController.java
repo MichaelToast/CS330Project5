@@ -70,10 +70,10 @@ public class ShelterController {
                 break;
             default:
             	System.out.println("kjfnsfdnskj");
+            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo:" + tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
             	break;
-                // THIS IS AN EXOTIC ANIMAL we have to create
         }
-		shelter.addPet(pet);
+		shelter.getAnimalList().add(pet);
 		centerView.getPetList().addElement(pet);
 		centerView.setVisible(true);
 
@@ -100,34 +100,27 @@ public class ShelterController {
 	    }
 	}
 
-
 	private class AdoptPetButtonActionListener implements ActionListener {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-	        // Get the indices of the selected pets that the user wants to adopt
 	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
-	        List<Pet> petList = new ArrayList<>();
-
-	        // Loop through the selected pet indices and add the pets to the list
-	        for (int i = 0; i < multipleSelectedPetIndices.length; i++) {
-	            petList.add(centerView.getPetList().get(multipleSelectedPetIndices[i]));
+	        Arrays.sort(multipleSelectedPetIndices);
+	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
+	            int index = multipleSelectedPetIndices[i];
+	            Pet pet = centerView.getPetList().get(index);
+	            pet.setAdopted(false);
+	            //centerView.getPetList().removeElementAt(index);
+	            //shelter.getAnimalList().remove(pet);
 	        }
 
-	        // Loop through each pet and mark it as adopted
-	        for (Pet pet : petList) {
-	            pet.setAdopted(true); // Set the adopted status to true
-	        }
-
-	        // Optionally print out the updated list of pets to confirm the changes
 	        for (Pet pet : shelter.getAnimalList()) {
-	            System.out.println("Pet: " + pet + ", Adopted: " + pet.isAdopted());
+	            System.out.println("Pet: " + pet);
 	        }
 	        
 	        //
 	    }
 	}
-
 
 	
 	public void readNonExoticAnimalFile(String fileName) {

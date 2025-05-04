@@ -43,9 +43,6 @@ public class AdoptionCenterView extends JFrame{
         adoptSelectedAnimals = new JButton("Adopt Selected Animals");
         adoptSelectedAnimals.setBounds(309, 306, 161, 33);
 		panel.add(adoptSelectedAnimals);
-		adoptSelectedAnimals = new JButton("Adopt Selected Animals");
-		adoptSelectedAnimals.setBounds(309, 306, 161, 33);
-		panel.add(adoptSelectedAnimals);
 		
 		sortingDropDown = new JComboBox();
 		sortingDropDown.setBounds(119, 43, 56, 22);
@@ -78,7 +75,6 @@ public class AdoptionCenterView extends JFrame{
 	}
 	
 	public int[] getMultipleSelectedPets() {
-		System.out.println("These are the selected indexes: " + list.getSelectedIndices());
 		return list.getSelectedIndices();
 	}
 

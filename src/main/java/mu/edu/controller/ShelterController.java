@@ -9,6 +9,9 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,12 +33,48 @@ public class ShelterController {
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
 	
-	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
-		this.shelter = shelter; 
-		this.inputView = inputView;
-        this.centerView = new AdoptionCenterView();
-		this.inputView.addSubmitListener(new SubmitButtonActionListener());
-	}
+public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
+    this.shelter = shelter;
+    this.inputView = inputView;
+    this.centerView = new AdoptionCenterView();
+
+    this.inputView.addSubmitListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = inputView.getAnimalName();
+            Integer age = inputView.getAnimalAge();
+
+            if (name.isEmpty() || age == null || age <= 0) {
+                JOptionPane.showMessageDialog(null, "Please enter a name and age.");
+                return;
+            }
+
+            centerView.setVisible(true);
+            inputView.setVisible(false);
+
+            centerView.updatePetList(shelter.getAvailablePets());
+        }
+    });
+
+    this.centerView.getDeleteButton().addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Pet selected = centerView.getSelectedPet();
+            if (selected != null) {
+                boolean removed = shelter.removePet(selected.getId());
+                if (removed) {
+                    centerView.getUserList().removeElement(selected);
+                    System.out.println("Deleted pet: " + selected.getName());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to remove pet from model.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a pet to delete.");
+            }
+        }
+    });
+}
+
 	
 	public void initiate() {
 		inputView.setVisible(true);

@@ -57,10 +57,10 @@ public class AdoptionCenterView extends JFrame{
 		saveButton.setBounds(398, 43, 89, 23);
 		panel.add(saveButton);
 		
-		txtrSortBy = new JTextArea();
-		txtrSortBy.setText("Sort By:");
-		txtrSortBy.setBounds(10, 42, 80, 22);
-		panel.add(txtrSortBy);
+		JLabel lblNewLabel = new JLabel();
+		lblNewLabel.setText("Sort By:");
+		lblNewLabel.setBounds(10, 42, 80, 22);
+		panel.add(lblNewLabel);
 	}
 	
 	public void addActionListenerToDeletePetsButton(ActionListener listener) {

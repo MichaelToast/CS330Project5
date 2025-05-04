@@ -36,6 +36,8 @@ public class ShelterController {
 	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
 	private AdoptionCenterView centerView;
+	private Integer nonExoticIdCounter; 
+	private Integer exoticIdCounter; 
 	
 	public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
 	    this.shelter = shelter;
@@ -46,6 +48,9 @@ public class ShelterController {
 		this.centerView.addActionListenerToAdoptPetsButton(new AdoptPetButtonActionListener());
 		this.centerView.addActionListenerToSortingDropDown(new SortingActionListener());
 		this.centerView.addActionListenerToSaveButton(new SaveActionListener());
+		
+		this.nonExoticIdCounter = 0;
+		this.exoticIdCounter = 0;
 	}
 
 	public void initiate() {
@@ -55,30 +60,34 @@ public class ShelterController {
 	private class SubmitButtonActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Need to see if what they a
 			String type = inputView.getAnimalType();
 			String tempId = "";
 			
 			Pet pet = null;
-			// 
+			
 			switch (type) {
             case "Dog":
-                pet = new Dog(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+            	nonExoticIdCounter ++;
+                pet = new Dog(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());  
                 break;
             case "Cat":
-                pet = new Cat(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                nonExoticIdCounter ++;
+                pet = new Cat(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             case "Rabbit":
-                pet = new Rabbit(tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
+                nonExoticIdCounter ++;
+                pet = new Rabbit(Integer.toString(nonExoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(), inputView.getAnimalAge());
                 break;
             default:
-            	System.out.println("kjfnsfdnskj");
-            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo:" + tempId, inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
+            	exoticIdCounter ++;
+            	pet = new ExoticAnimalAdapter(new ExoticAnimal("exo:" + Integer.toString(exoticIdCounter), inputView.getAnimalName(), inputView.getAnimalSpecies(),inputView.getAnimalType(), inputView.getAnimalAge()));
             	break;
         }
 		shelter.getAnimalList().add(pet);
 		centerView.getPetList().addElement(pet);
 		centerView.setVisible(true);
+		//nonExoticIdCounter ++;
+		//System.out.println("I AM A GENUS: " + nonExoticIdCounter);
 
 			
 		}
@@ -165,7 +174,7 @@ public class ShelterController {
 		
 	}
 
-	
+	/*Read pets.json*/
 	public void readNonExoticAnimalFile(String fileName) {
         try {
             FileReader reader = new FileReader(fileName);
@@ -202,6 +211,9 @@ public class ShelterController {
 
                 if (pet != null) {
                     this.shelter.addPet(pet);
+                    centerView.getPetList().addElement(pet);
+            		centerView.setVisible(true);
+            		nonExoticIdCounter ++;
                 }
             }
 
@@ -211,13 +223,13 @@ public class ShelterController {
         }
     }
 	
+	
+	/*Read exotic_animals.json*/
 	public void readExoticAnimalFile(String filename) {
 		System.out.println("Attempting to read the file!");
         try {
             FileReader reader = new FileReader(filename);
             Gson gson = new Gson();
-
-            // Define the type for the list of pets
             Type petListType = new TypeToken<List<Map<String, Object>>>(){}.getType();
             List<Map<String, Object>> petList = gson.fromJson(reader, petListType);
 
@@ -232,6 +244,9 @@ public class ShelterController {
                 pet = new ExoticAnimalAdapter(new ExoticAnimal(uniqueId, animalName, category, subSpecies, yearsOld));
                 if (pet != null) {
                     this.shelter.addPet(pet);
+            		centerView.getPetList().addElement(pet);
+            		centerView.setVisible(true);
+            		exoticIdCounter ++;
                 }
             }
 
@@ -241,6 +256,8 @@ public class ShelterController {
         }
 	}
 	
+	
+	/*Saves animal list with current time and date*/
 	public void saveAnimalList () {
 		LocalDateTime now = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -261,12 +278,6 @@ public class ShelterController {
 	        System.out.println("Error saving animal list");
 	    }
 	}
-	
-	public void tempPrintShelter() {
-		for (Object obj : this.shelter.getAnimalList()) {
-		    Pet p = (Pet) obj;
-		    System.out.println(p);
-		}
-	}
+
 
 }

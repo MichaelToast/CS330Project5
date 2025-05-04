@@ -114,15 +114,22 @@ public class ShelterController {
 	private class AdoptPetButtonActionListener implements ActionListener {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+	    	boolean errorEncountered = false; // So that the error doesn't dispapear
 	        int[] multipleSelectedPetIndices = centerView.getMultipleSelectedPets();
 	        Arrays.sort(multipleSelectedPetIndices);
 	        for (int i = multipleSelectedPetIndices.length - 1; i >= 0; i--) {
 	            int index = multipleSelectedPetIndices[i];
 	            Pet pet = centerView.getPetList().get(index);
+	            if (pet.isAdopted()) {
+	            	centerView.setDialogue("Pets Cannot be Adopted more than once!");
+	            	errorEncountered = true;
+	            }
 	            pet.setAdopted(true);
 	            centerView.getPetList().set(index, pet); 
 	        }
-	        centerView.setDialogue("Thank You!");
+	        if (!errorEncountered) {
+	        	centerView.setDialogue("Thank You!");
+	        }
 
 	    }
 	}

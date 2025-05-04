@@ -121,7 +121,6 @@ public class ShelterController {
 	}
 	
 	public void saveAnimalList () {
-	    // Get current date and time for the filename
 	    LocalDateTime now = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 	    String fileName = now.format(formatter) + "_pets.json";
@@ -129,11 +128,10 @@ public class ShelterController {
 	    try (FileWriter writer = new FileWriter(fileName)) {
 	        Gson gson = new Gson();
 	        
-	        // Serialize the whole list of pets to JSON
 	        List<Pet> pets = this.shelter.getAnimalList();
 	        
-	        // Write the entire list as a JSON array
-	        gson.toJson(pets, writer);  // This serializes the list and writes it directly to the file
+	        // Write list as JSON
+	        gson.toJson(pets, writer);
 
 	        System.out.println("Animal list saved to " + fileName);
 	    } catch (IOException e) {
@@ -150,3 +148,4 @@ public class ShelterController {
 	}
 
 }
+

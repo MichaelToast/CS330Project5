@@ -12,7 +12,6 @@ public class AdoptionCenterView extends JFrame{
 	private JPanel panel;
 	private JList list;
 	private JButton deleteSelectedPets;
-	private JButton adoptSelectedPets;
 	private JButton saveButton; 
 	private JTextArea textArea;
 	private JComboBox sortingDropDown;
@@ -41,9 +40,9 @@ public class AdoptionCenterView extends JFrame{
 		deleteSelectedPets.setBounds(100, 280, 180, 35);
         panel.add(deleteSelectedPets);
 		
-		adoptSelectedPets = new JButton("Adopt Selected Animals");
-		adoptSelectedPets.setBounds(309, 306, 161, 33);
-		panel.add(adoptSelectedPets);
+        adoptSelectedAnimals = new JButton("Adopt Selected Animals");
+        adoptSelectedAnimals.setBounds(309, 306, 161, 33);
+		panel.add(adoptSelectedAnimals);
 		adoptSelectedAnimals = new JButton("Adopt Selected Animals");
 		adoptSelectedAnimals.setBounds(309, 306, 161, 33);
 		panel.add(adoptSelectedAnimals);
@@ -66,7 +65,7 @@ public class AdoptionCenterView extends JFrame{
 	}
 	
 	public void addActionListenerToAdoptPetsButton(ActionListener listener) {
-		adoptSelectedPets.addActionListener(listener);
+		adoptSelectedAnimals.addActionListener(listener);
 	}
 	
 	public DefaultListModel<Pet> getPetList() {
@@ -79,6 +78,7 @@ public class AdoptionCenterView extends JFrame{
 	}
 	
 	public int[] getMultipleSelectedPets() {
+		System.out.println("These are the selected indexes: " + list.getSelectedIndices());
 		return list.getSelectedIndices();
 	}
 

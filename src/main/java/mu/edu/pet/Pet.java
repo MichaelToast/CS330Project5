@@ -68,9 +68,8 @@ public abstract class Pet implements Comparable <Pet>{
 
 	@Override
 	public String toString() {
-		return "[id=" + id + ", name=" + name + ", type=" + type + ", species=" + species + ", age="
-				+ age + ", adopted=" + adopted + "]";
-	}
+		return name + " (" + species + ", age " + age + ")" + (adopted ? " - Adopted" : "");
+	}	
 	
 	@Override
 	public boolean equals(Object obj) {

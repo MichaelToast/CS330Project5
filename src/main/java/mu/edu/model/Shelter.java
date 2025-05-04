@@ -72,6 +72,11 @@ public class Shelter <T extends Pet> {
 				.collect(Collectors.toList());
 	}
 	
+	public List<Pet> getAllPets() {
+		return new ArrayList<>(animalList);
+	}
+	
+
 	public void sortPetsByName() {
 		animalList.sort(new SortByName());
 	}

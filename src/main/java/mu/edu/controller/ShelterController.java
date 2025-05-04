@@ -14,9 +14,12 @@ import javax.swing.JOptionPane;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
 
 import mu.edu.model.Shelter;
 import mu.edu.pet.Cat;
@@ -28,6 +31,10 @@ import mu.edu.pet.Rabbit;
 import mu.edu.view.AdoptionCenterView;
 import mu.edu.view.AdoptionInputView;
 
+import mu.edu.comparators.SortByName;
+import mu.edu.comparators.SortByAge;
+import mu.edu.comparators.SortBySpecies;
+
 public class ShelterController {
 	private Shelter<Pet> shelter; 
 	private AdoptionInputView inputView;
@@ -38,27 +45,50 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
     this.inputView = inputView;
     this.centerView = new AdoptionCenterView();
 
+    //  Add listener to submit button to properly add Animals in list
     this.inputView.addSubmitListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = inputView.getAnimalName();
             Integer age = inputView.getAnimalAge();
-
-            if (name.isEmpty() || age == null || age <= 0) {
-                JOptionPane.showMessageDialog(null, "Please enter a name and age.");
+            String species = inputView.getAnimalSpecies();
+            String type = inputView.getAnimalType();
+            
+            // Requires valid input
+            if (name.isEmpty() || age == null || age <= 0 || species.isEmpty() || type.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please fill in all fields correctly.");
                 return;
             }
-
-            readNonExoticAnimalFile("src/main/resources/pets.json");
-            readExoticAnimalFile("src/main/resources/exotic_animals.json");
+    
+            //  Create Pet from input
+            Pet pet = null;
+            String tempId = "manual-" + System.currentTimeMillis();
             
-
-            centerView.setVisible(true);
-
+            // Handles creating pet based off of values
+            switch (type.toLowerCase()) {
+                case "dog":
+                    pet = new Dog(tempId, name, species, age);
+                    break;
+                case "cat":
+                    pet = new Cat(tempId, name, species, age);
+                    break;
+                case "rabbit":
+                    pet = new Rabbit(tempId, name, species, age);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Unsupported type. Use Dog, Cat, or Rabbit.");
+                    return;
+            }
+    
+            shelter.addPet(pet);
             centerView.updatePetList(shelter.getAvailablePets());
+            
+            // Keeps center view visible and input view open
+            centerView.setVisible(true);
         }
     });
-
+    
+     //  Add listener to delete button to properly delete Animals in list
     this.centerView.getDeleteButton().addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -76,6 +106,71 @@ public ShelterController(Shelter<Pet> shelter, AdoptionInputView inputView) {
             }
         }
     });
+    //  Add listener to adopt button to properly adopt Animals in list
+    centerView.getAdoptButton().addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Pet selected = centerView.getSelectedPet();
+    
+            if (selected == null) {
+                JOptionPane.showMessageDialog(null, "Please select a pet to adopt.");
+                return;
+            }
+    
+            if (selected.isAdopted()) {
+                JOptionPane.showMessageDialog(null, selected.getName() + " is already adopted.");
+                return;
+            }
+    
+            selected.setAdopted(true);
+            JOptionPane.showMessageDialog(null, "Congratulations! You adopted " + selected.getName() + ".");
+    
+            centerView.updatePetList(shelter.getAllPets());
+        }
+    });
+    //  Add listener to sort dropdown so the list can be sorted by selected option
+    centerView.getSortCombo().addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String selected = (String) centerView.getSortCombo().getSelectedItem();
+            List<Pet> pets = shelter.getAvailablePets();
+    
+            switch (selected) {
+                case "Sort by Name":
+                    pets.sort(new SortByName());
+                    break;
+                case "Sort by Age":
+                    pets.sort(new SortByAge());
+                    break;
+                case "Sort by Species":
+                    pets.sort(new SortBySpecies());
+                    break;
+                default:
+                    break;
+            }
+    
+            centerView.updatePetList(pets);
+        }
+    });
+    
+    //  Add listener to save button to save non-adopted pets to json file
+    centerView.getSaveButton().addActionListener(e -> {
+        List<Pet> petsToSave = shelter.getAllPets();
+    
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(petsToSave);
+    
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String filename = "saved_animals_" + timestamp + ".json";
+    
+        try (FileWriter writer = new FileWriter(filename)) {
+            writer.write(json);
+            JOptionPane.showMessageDialog(null, "Animal list saved to " + filename);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to save file.");
+        }
+    });    
 }
 
 	
